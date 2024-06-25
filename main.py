@@ -42,35 +42,42 @@ def handle_follow(event):
                     "type": "bubble",
                     "hero": {
                         "type": "image",
-                        "url": "https://www.simplyrecipes.com/thmb/fUv6VKM4_ofF1s6oFP6LpdWsQzQ=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/Simply-Recipes-Perfect-Popcorn-LEAD-31-3af0091610534688987ea45b0efa472a.JPG",
+                        "url": "https://miro.medium.com/v2/resize:fit:1100/format:webp/0*T3hzZYnWBEOrQzM1.jpg",
                         "size": "full",
-                        "aspect_ratio": "20:13",
-                        "aspect_mode": "cover",
+                        "aspectRatio": "18:10",
+                        "aspectMode": "cover",
+                        "action": {
+                            "type": "uri",
+                            "uri": "https://line.me/"
+                        }
                     },
-                    "body": {
+                    "footer": {
                         "type": "box",
                         "layout": "vertical",
+                        "spacing": "sm",
                         "contents": [
                             {
                                 "type": "button",
-                                "action": {
-                                    "type": "message",
-                                    "label": "電影類型選擇",
-                                    "text": "電影類型選擇"
-                                },
                                 "style": "primary",
-                                "color": "#00C300"
+                                "height": "md",
+                                "action": {
+                                    "type": "uri",
+                                    "label": "電影類型選擇",
+                                    "uri": "https://line.me/"
+                                }
                             },
                             {
                                 "type": "button",
+                                "style": "secondary",
+                                "height": "md",
                                 "action": {
-                                    "type": "message",
+                                    "type": "uri",
                                     "label": "自行輸入",
-                                    "text": "自行輸入"
-                                },
-                                "margin": "md"
+                                    "uri": "https://line.me/"
+                                }
                             }
-                        ]
+                        ],
+                        "flex": 0
                     }
                 }
             )
