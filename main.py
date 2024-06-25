@@ -102,7 +102,7 @@ def handle_message(event):
         buttons = [
             {
                 "type": "button",
-                "style": "primary" if i % 2 == 0 else "secondary",
+                "style": "link",
                 "height": "md",
                 "action": {
                     "type": "message",
@@ -114,7 +114,7 @@ def handle_message(event):
         ]
 
         # 将按钮分成每行5个的布局
-        rows = [buttons[i:i + 5] for i in range(0, len(buttons), 5)]
+        rows = [buttons[i:i + 4] for i in range(0, len(buttons), 4)]
         contents = [{"type": "box", "layout": "horizontal", "contents": row} for row in rows]
 
         flex_message = FlexSendMessage(
