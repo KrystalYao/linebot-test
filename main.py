@@ -12,6 +12,9 @@ HANDLER = '910973d1cee8b1ee4407254e3ca5fb2d'
 line_bot_api = LineBotApi(LINE_BOT_API)
 handler = WebhookHandler(HANDLER)
 
+# 用于追踪用户是否已收到欢迎消息的字典
+welcome_sent = {}
+
 @app.route("/callback", methods=['POST'])
 def callback():
     signature = request.headers['X-Line-Signature']
@@ -26,7 +29,19 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    if event.message.text == "電影":
+    user_id = event.source.user_id
+    
+    # 检查用户是否已经收到欢迎消息
+    if user_id not in welcome_sent:
+        # 发送欢迎消息
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="歡迎來到我們的 LINE Bot！請選擇一個選項。")
+        )
+        # 标记用户已收到欢迎消息
+        welcome_sent[user_id] = True
+    else:
+        # 发送选单
         flex_message = FlexSendMessage(
             alt_text="電影選擇",
             contents={
@@ -66,8 +81,6 @@ def handle_message(event):
             }
         )
         line_bot_api.reply_message(event.reply_token, flex_message)
-    else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="請選擇一個選項。"))
 
 if __name__ == "__main__":
     app.run(port=8000)
