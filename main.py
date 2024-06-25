@@ -36,7 +36,7 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token,
             [
-                TextSendMessage(text="您好! 我是電影推薦小助手。"),
+                TextSendMessage(text="您好，我是電影推薦小助手。"),
                 FlexSendMessage(
                     alt_text="電影選擇",
                     contents={
