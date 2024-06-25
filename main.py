@@ -98,8 +98,8 @@ def handle_message(event):
                        "科幻", "劇情", "冒險", "動作", "浪漫", "奇幻", "兒童", "默劇", "歷史",
                        "短片", "傳記", "音樂", "家庭", "成人", "脫口秀", "實境秀"]
 
-# 构建电影类型按钮，style为link
-        movie_buttons = [
+# 构建按钮，style交替设置
+        buttons = [
             {
                 "type": "button",
                 "style": "link",
@@ -110,37 +110,60 @@ def handle_message(event):
                     "text": label
                 }
             }
-            for label in movie_types
+            for i, label in enumerate(movie_types)
         ]
 
-        # 将电影类型按钮分成每行4个的布局
-        movie_rows = [movie_buttons[i:i + 4] for i in range(0, len(movie_buttons), 4)]
-        movie_contents = [{"type": "box", "layout": "horizontal", "contents": row} for row in movie_rows]
+        # 将按钮分成每行4个的布局
+        rows = [buttons[i:i + 4] for i in range(0, len(buttons), 4)]
+        contents = [{"type": "box", "layout": "horizontal", "contents": row} for row in rows]
 
-        # 构建额外选项菜单按钮
-        extra_buttons = [
-            {
-                "type": "button",
-                "style": "link",
-                "height": "md",
-                "action": {
-                    "type": "message",
-                    "label": label,
-                    "text": label
-                }
-            }
-            for label in ["全部", "亞洲", "歐洲", "英國", "非洲", "美國"]
-        ]
-
-        # 将额外选项菜单按钮分成每行3个的布局
-        extra_rows = [extra_buttons[i:i + 3] for i in range(0, len(extra_buttons), 3)]
-        extra_contents = [{"type": "box", "layout": "horizontal", "contents": row} for row in extra_rows]
-
-        # 合并电影类型选单和额外选项菜单
-        contents = movie_contents + extra_contents
+        # 调整最后一行的内容
+        if len(rows[-1]) < 4:
+            # 添加剩余的空白按钮使得每行都有4个按钮
+            rows[-1].extend([
+                {"type": "button", "style": "link", "height": "md", "action": {"type": "message", "label": " ", "text": " "}}
+                for _ in range(4 - len(rows[-1]))
+            ])
 
         flex_message = FlexSendMessage(
             alt_text="電影類型選擇",
+            contents={
+                "type": "bubble",
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "spacing": "sm",
+                    "contents": contents
+                }
+            }
+        )
+
+        line_bot_api.reply_message(event.reply_token, flex_message)
+    elif text in ["全部", "喜劇", "犯罪", "戰爭", "歌舞", "動畫", "驚悚", "懸疑", "恐怖",
+                  "科幻", "劇情", "冒險", "動作", "浪漫", "奇幻", "兒童", "默劇", "歷史",
+                  "短片", "傳記", "音樂", "家庭", "成人", "脫口秀", "實境秀"]:
+        # 用户选择了具体电影类型，发送包含"全部 亞洲 歐洲 英國 非洲 美國"的选单
+        regions = ["全部", "亞洲", "歐洲", "英國", "非洲", "美國"]
+
+        # 构建按钮，每行3个按钮的水平布局
+        rows = [[
+            {
+                "type": "button",
+                "style": "link",
+                "height": "md",
+                "action": {
+                    "type": "message",
+                    "label": region,
+                    "text": region
+                }
+            }
+            for region in regions[i:i + 3]
+        ] for i in range(0, len(regions), 3)]
+
+        contents = [{"type": "box", "layout": "horizontal", "contents": row} for row in rows]
+
+        flex_message = FlexSendMessage(
+            alt_text="地區選擇",
             contents={
                 "type": "bubble",
                 "body": {
