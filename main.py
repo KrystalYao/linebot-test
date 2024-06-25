@@ -61,9 +61,9 @@ def handle_follow(event):
                                 "style": "primary",
                                 "height": "md",
                                 "action": {
-                                    "type": "uri",
+                                    "type": "message",
                                     "label": "電影類型選擇",
-                                    "uri": "https://line.me/"
+                                    "text": "電影類型選擇"
                                 }
                             },
                             {
