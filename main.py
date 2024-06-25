@@ -98,8 +98,8 @@ def handle_message(event):
                        "科幻", "劇情", "冒險", "動作", "浪漫", "奇幻", "兒童", "默劇", "歷史",
                        "短片", "傳記", "音樂", "家庭", "成人", "脫口秀", "實境秀"]
 
-        # 构建按钮，style交替设置
-        buttons = [
+# 构建电影类型按钮，style为link
+        movie_buttons = [
             {
                 "type": "button",
                 "style": "link",
@@ -110,33 +110,34 @@ def handle_message(event):
                     "text": label
                 }
             }
-            for i, label in enumerate(movie_types)
+            for label in movie_types
         ]
 
-        # 将按钮分成每行4个的布局
-        rows = [buttons[i:i + 4] for i in range(0, len(buttons), 4)]
-        contents = [{"type": "box", "layout": "horizontal", "contents": row} for row in rows]
+        # 将电影类型按钮分成每行4个的布局
+        movie_rows = [movie_buttons[i:i + 4] for i in range(0, len(movie_buttons), 4)]
+        movie_contents = [{"type": "box", "layout": "horizontal", "contents": row} for row in movie_rows]
 
-        # 调整最后一行的内容
-        if len(rows[-1]) < 4:
-            # 添加剩余的空白按钮使得每行都有4个按钮
-            rows[-1].extend([
-                {"type": "button", "style": "link", "height": "md", "action": {"type": "message", "label": " ", "text": " "}}
-                for _ in range(4 - len(rows[-1]))
-            ])
+        # 构建额外选项菜单按钮
+        extra_buttons = [
+            {
+                "type": "button",
+                "style": "link",
+                "height": "md",
+                "action": {
+                    "type": "message",
+                    "label": label,
+                    "text": label
+                }
+            }
+            for label in ["全部", "亞洲", "歐洲", "英國", "非洲", "美國"]
+        ]
 
-        # 更新最后一行的标签为要求的内容
-        rows[-2][-1]["action"]["label"] = "音樂"
-        rows[-2][-1]["action"]["text"] = "音樂"
-        rows[-2][-2]["action"]["label"] = "家庭"
-        rows[-2][-2]["action"]["text"] = "家庭"
-        rows[-2][-3]["action"]["label"] = "成人"
-        rows[-2][-3]["action"]["text"] = "成人"
+        # 将额外选项菜单按钮分成每行3个的布局
+        extra_rows = [extra_buttons[i:i + 3] for i in range(0, len(extra_buttons), 3)]
+        extra_contents = [{"type": "box", "layout": "horizontal", "contents": row} for row in extra_rows]
 
-        rows[-1][0]["action"]["label"] = "脫口秀"
-        rows[-1][0]["action"]["text"] = "脫口秀"
-        rows[-1][1]["action"]["label"] = "實境秀"
-        rows[-1][1]["action"]["text"] = "實境秀"
+        # 合并电影类型选单和额外选项菜单
+        contents = movie_contents + extra_contents
 
         flex_message = FlexSendMessage(
             alt_text="電影類型選擇",
