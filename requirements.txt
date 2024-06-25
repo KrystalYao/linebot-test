@@ -1,4 +1,2 @@
 line-bot-sdk
 flask
-Flask-RESTful
-flask_sqlalchemy
