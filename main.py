@@ -113,9 +113,30 @@ def handle_message(event):
             for i, label in enumerate(movie_types)
         ]
 
-        # 将按钮分成每行5个的布局
+        # 将按钮分成每行4个的布局
         rows = [buttons[i:i + 4] for i in range(0, len(buttons), 4)]
         contents = [{"type": "box", "layout": "horizontal", "contents": row} for row in rows]
+
+        # 调整最后一行的内容
+        if len(rows[-1]) < 4:
+            # 添加剩余的空白按钮使得每行都有4个按钮
+            rows[-1].extend([
+                {"type": "button", "style": "link", "height": "md", "action": {"type": "message", "label": " ", "text": " "}}
+                for _ in range(4 - len(rows[-1]))
+            ])
+
+        # 更新最后一行的标签为要求的内容
+        rows[-2][-1]["action"]["label"] = "音樂"
+        rows[-2][-1]["action"]["text"] = "音樂"
+        rows[-2][-2]["action"]["label"] = "家庭"
+        rows[-2][-2]["action"]["text"] = "家庭"
+        rows[-2][-3]["action"]["label"] = "成人"
+        rows[-2][-3]["action"]["text"] = "成人"
+
+        rows[-1][0]["action"]["label"] = "脫口秀"
+        rows[-1][0]["action"]["text"] = "脫口秀"
+        rows[-1][1]["action"]["label"] = "實境秀"
+        rows[-1][1]["action"]["text"] = "實境秀"
 
         flex_message = FlexSendMessage(
             alt_text="電影類型選擇",
