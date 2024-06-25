@@ -33,7 +33,7 @@ def handle_message(event):
                 "type": "bubble",
                 "hero": {
                     "type": "image",
-                    "url": "https://example.com/popcorn.jpg",
+                    "url": "https://www.simplyrecipes.com/thmb/fUv6VKM4_ofF1s6oFP6LpdWsQzQ=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/Simply-Recipes-Perfect-Popcorn-LEAD-31-3af0091610534688987ea45b0efa472a.JPG",
                     "size": "full",
                     "aspect_ratio": "20:13",
                     "aspect_mode": "cover",
