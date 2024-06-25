@@ -1,8 +1,4 @@
 line-bot-sdk
 flask
 Flask-RESTful
-pandas
-numpy
-requests
-gunicorn
 flask_sqlalchemy
