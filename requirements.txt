@@ -1,2 +1,8 @@
-Flask==2.0.1
-line-bot-sdk==1.19.0
+line-bot-sdk
+flask
+Flask-RESTful
+pandas
+numpy
+requests
+gunicorn
+flask_sqlalchemy
