@@ -61,9 +61,9 @@ def handle_follow(event):
                                 "style": "primary",
                                 "height": "md",
                                 "action": {
-                                    "type": "uri",
+                                    "type": "message",
                                     "label": "電影類型選擇",
-                                    "uri": "https://line.me/"
+                                    "text": "電影類型選擇"
                                 }
                             },
                             {
@@ -90,12 +90,49 @@ def handle_follow(event):
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_id = event.source.user_id
+    text = event.message.text
 
-    if user_id not in user_state:
-        # 如果用户状态不存在，提示用户选择选项
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="請選擇一個選項。"))
+    if text == "電影類型選擇":
+        # 用户选择了電影類型選擇，发送电影类型选单
+        movie_types = ["全部", "喜劇", "犯罪", "戰爭", "歌舞", "動畫", "驚悚", "懸疑", "恐怖",
+                       "科幻", "劇情", "冒險", "動作", "浪漫", "奇幻", "兒童", "默劇", "歷史",
+                       "短片", "傳記", "音樂", "家庭", "成人", "脫口秀", "實境秀"]
+
+        # 构建按钮，style交替设置
+        buttons = [
+            {
+                "type": "button",
+                "style": "primary" if i % 2 == 0 else "secondary",
+                "height": "md",
+                "action": {
+                    "type": "message",
+                    "label": label,
+                    "text": label
+                }
+            }
+            for i, label in enumerate(movie_types)
+        ]
+
+        # 将按钮分成每行5个的布局
+        rows = [buttons[i:i + 5] for i in range(0, len(buttons), 5)]
+        contents = [{"type": "box", "layout": "horizontal", "contents": row} for row in rows]
+
+        flex_message = FlexSendMessage(
+            alt_text="電影類型選擇",
+            contents={
+                "type": "bubble",
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "spacing": "sm",
+                    "contents": contents
+                }
+            }
+        )
+
+        line_bot_api.reply_message(event.reply_token, flex_message)
     else:
-        # 用户已接收过欢迎消息和选单，继续处理其他消息
+        # 其他消息处理
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text="請選擇一個選項。"))
 
 if __name__ == "__main__":
