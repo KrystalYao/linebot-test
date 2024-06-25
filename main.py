@@ -2,32 +2,13 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, FlexSendMessage
-
-# #from weather import Get_Weather, Get_Forecast, Get_AQI, Get_Earthquake, RadarEcho_url
-# from dbpsql import userRatings, userIDs
-# from movie_class import Movie2
-# import os
-# import random
-# import pandas as pd
-# from openai import OpenAI # pip install openai
-# import pickle
-# import threading
-# import time
-# from surprise import Reader, Dataset #, SVD, SVDpp
-# import numpy as np
-# # from collections import OrderedDict
+import os
 
 app = Flask(__name__)
 
-api = Api(app)
 # Environment variables on Render
-line_bot_api = LineBotApi(os.environ.get('CHANNEL_ACCESS_TOKEN')) # Channel Access Token
-handler = WebhookHandler(os.environ.get('CHANNEL_SECRET')) # Channel Secret
-# openai_api_key = os.environ.get('OPENAI_API_KEY') # OPENAI_API_KEY
-
-# LINE bot的Channel Access Token和Channel Secret
-LINE_BOT_API = 'YOUR_CHANNEL_ACCESS_TOKEN'
-HANDLER = 'YOUR_CHANNEL_SECRET'
+LINE_BOT_API = os.environ.get('CHANNEL_ACCESS_TOKEN')  # Channel Access Token
+HANDLER = os.environ.get('CHANNEL_SECRET')  # Channel Secret
 
 line_bot_api = LineBotApi(LINE_BOT_API)
 handler = WebhookHandler(HANDLER)
@@ -83,7 +64,6 @@ def handle_message(event):
         # 這裡可以根據用戶輸入的電影類型進行推薦，這部分可根據實際需求增加推薦邏輯
         recommendation = f"為您推薦一些{event.message.text}類型的電影：\n1. 示例電影A\n2. 示例電影B\n3. 示例電影C"
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=recommendation))
-#postback message == 自行輸入, gpt呈現回覆語句 [引導使用者進入下一步]
 
 if __name__ == "__main__":
     app.run(port=8000)
@@ -294,19 +274,7 @@ if __name__ == "__main__":
 #             msg = CarouselColumn(
 #                 thumbnail_image_url=honmpage_picture,
 #                 title='\"'+keyword+'\"的搜尋結果',
-#                 text='請選擇欲執行的功能',
-#                 actions=[
-#                     PostbackTemplateAction(
-#                         label='顯示更多',
-#                         data='action=3-2'
-#                     ),
-#                     PostbackTemplateAction(
-#                         label='下個類型',
-#                         data='action=3-3'
-#                     ),
-#                     PostbackTemplateAction(
-#                         label='返回首頁',
-#                         data='action=0'
+
 #                     )
 #                 ]
 #             )
@@ -316,18 +284,3 @@ if __name__ == "__main__":
 #                 title='智慧推薦',
 #                 text='請選擇欲執行的功能',
 #                 actions=[
-#                     PostbackTemplateAction(
-#                         label='顯示更多',
-#                         data='action=6-2'
-#                     ),
-#                     PostbackTemplateAction(
-#                         label='返回首頁',
-#                         data='action=0'
-#                     ),
-#                     PostbackTemplateAction(
-#                         label=' ',
-#                         data='action=0'
-#                     )
-#                 ]
-#             )
-#         return msg
