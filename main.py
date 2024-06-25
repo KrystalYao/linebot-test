@@ -13,7 +13,7 @@ line_bot_api = LineBotApi(LINE_BOT_API)
 handler = WebhookHandler(HANDLER)
 
 # 用于追踪用户是否已收到欢迎消息的字典
-welcome_sent = {}
+welcome_sent = {您好}
 
 @app.route("/callback", methods=['POST'])
 def callback():
