@@ -88,6 +88,7 @@ def handle_follow(event):
     user_state[user_id] = 'menu_sent'
 
 @handler.add(MessageEvent, message=TextMessage)
+@handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text
@@ -98,7 +99,7 @@ def handle_message(event):
                        "科幻", "劇情", "冒險", "動作", "浪漫", "奇幻", "兒童", "默劇", "歷史",
                        "短片", "傳記", "音樂", "家庭", "成人", "脫口秀", "實境秀"]
 
-# 构建按钮，style交替设置
+        # 构建按钮，style交替设置
         buttons = [
             {
                 "type": "button",
@@ -115,11 +116,9 @@ def handle_message(event):
 
         # 将按钮分成每行4个的布局
         rows = [buttons[i:i + 4] for i in range(0, len(buttons), 4)]
-        contents = [{"type": "box", "layout": "horizontal", "contents": row} for row in rows]
 
-        # 调整最后一行的内容
+        # 调整最后一行的内容，保证每行都有4个按钮
         if len(rows[-1]) < 4:
-            # 添加剩余的空白按钮使得每行都有4个按钮
             rows[-1].extend([
                 {"type": "button", "style": "link", "height": "md", "action": {"type": "message", "label": " ", "text": " "}}
                 for _ in range(4 - len(rows[-1]))
@@ -133,7 +132,7 @@ def handle_message(event):
                     "type": "box",
                     "layout": "vertical",
                     "spacing": "sm",
-                    "contents": contents
+                    "contents": [{"type": "box", "layout": "horizontal", "contents": row} for row in rows]
                 }
             }
         )
@@ -160,8 +159,6 @@ def handle_message(event):
             for region in regions[i:i + 3]
         ] for i in range(0, len(regions), 3)]
 
-        contents = [{"type": "box", "layout": "horizontal", "contents": row} for row in rows]
-
         flex_message = FlexSendMessage(
             alt_text="地區選擇",
             contents={
@@ -170,7 +167,7 @@ def handle_message(event):
                     "type": "box",
                     "layout": "vertical",
                     "spacing": "sm",
-                    "contents": contents
+                    "contents": [{"type": "box", "layout": "horizontal", "contents": row} for row in rows]
                 }
             }
         )
