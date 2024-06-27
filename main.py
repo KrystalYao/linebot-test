@@ -146,7 +146,7 @@ def handle_message(event):
                   "短片", "傳記", "音樂", "家庭", "成人", "脫口秀", "實境秀"]:
         user_state[user_id] = {'genre': text}
 
-        regions = ["全部", "亞洲", "歐洲", "英國", "非洲", "美國"]
+        regions = ["全部", "亞洲", "歐洲", "英國", "非洲", "United States"]
 
         rows = [[
             {
@@ -177,7 +177,7 @@ def handle_message(event):
 
         line_bot_api.reply_message(event.reply_token, flex_message)
 
-    elif text in ["全部", "亞洲", "歐洲", "英國", "非洲", "美國"]:
+    elif text in ["全部", "亞洲", "歐洲", "英國", "非洲", "United States"]:
         if user_id in user_state and 'genre' in user_state[user_id]:
             user_state[user_id]['region'] = text
 
