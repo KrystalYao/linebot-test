@@ -1,12 +1,9 @@
+import pandas as pd
+import random
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, FlexSendMessage, FollowEvent
-import pandas as pd
-import random
-
-# 读取CSV文件到一个全局变量
-movies_df = pd.read_csv('action.csv')
 
 app = Flask(__name__)
 
@@ -19,6 +16,12 @@ handler = WebhookHandler(HANDLER)
 
 # 用于存储用户状态的字典
 user_state = {}
+
+# 读取CSV文件到一个全局变量
+try:
+    movies_df = pd.read_csv('action.csv')
+except pd.errors.EmptyDataError:
+    movies_df = pd.DataFrame(columns=['title', 'rate', 'information', 'country', 'box_office'])
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -89,17 +92,14 @@ def handle_follow(event):
         ]
     )
     
-    # 设置用户状态为已发送欢迎消息和选单
     user_state[user_id] = 'menu_sent'
 
-@handler.add(MessageEvent, message=TextMessage)
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text
 
     if text == "電影類型選擇":
-        # 用户选择了電影類型選擇，发送电影类型选单
         movie_types = ["全部", "喜劇", "犯罪", "戰爭", "歌舞", "動畫", "驚悚", "懸疑", "恐怖",
                        "科幻", "劇情", "冒險", "動作", "浪漫", "奇幻", "兒童", "默劇", "歷史",
                        "短片", "傳記", "音樂", "家庭", "成人", "脫口秀", "實境秀"]
@@ -210,46 +210,4 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text="请选擇一个选项。"))
 
 if __name__ == "__main__":
-    app.run(port=8000)
-
-    
-    
-       
-    #     # 用户选择了具体电影类型，发送包含"全部 亞洲 歐洲 英國 非洲 美國"的选单
-    #     countrys = ["全部", "亞洲", "歐洲", "英國", "非洲", "美國"]
-
-    #     # 构建按钮，每行3个按钮的水平布局
-    #     rows = [[
-    #         {
-    #             "type": "button",
-    #             "style": "link",
-    #             "height": "md",
-    #             "action": {
-    #                 "type": "message",
-    #                 "label": country,
-    #                 "text": country
-    #             }
-    #         }
-    #         for country in countrys[i:i + 3]
-    #     ] for i in range(0, len(countrys), 3)]
-
-    #     flex_message = FlexSendMessage(
-    #         alt_text="地區選擇",
-    #         contents={
-    #             "type": "bubble",
-    #             "body": {
-    #                 "type": "box",
-    #                 "layout": "vertical",
-    #                 "spacing": "sm",
-    #                 "contents": [{"type": "box", "layout": "horizontal", "contents": row} for row in rows]
-    #             }
-    #         }
-    #     )
-
-    #     line_bot_api.reply_message(event.reply_token, flex_message)
-    # else:
-    #     # 其他消息处理
-    #     line_bot_api.reply_message(event.reply_token, TextSendMessage(text="請選擇一個選項。"))
-
-#if __name__ == "__main__":
     app.run(port=8000)
