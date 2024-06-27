@@ -100,6 +100,7 @@ def handle_message(event):
     text = event.message.text
 
     if text == "電影類型選擇":
+        # 定義電影類型並創建動態按鈕
         movie_types = ["全部", "喜劇", "犯罪", "戰爭", "歌舞", "動畫", "驚悚", "懸疑", "恐怖",
                        "科幻", "劇情", "冒險", "動作", "浪漫", "奇幻", "兒童", "默劇", "歷史",
                        "短片", "傳記", "音樂", "家庭", "成人", "脫口秀", "實境秀"]
@@ -184,13 +185,14 @@ def handle_message(event):
             selected_genre = user_state[user_id]['genre']
             selected_region = user_state[user_id]['region']
 
-            # 根据用户选择的类型和地区筛选电影
+            # 根據用戶選擇的類型和地區篩選電影
             filtered_movies = movies_df[
                 (movies_df['genres'].str.contains(selected_genre, case=False, na=False) | (selected_genre == "全部")) &
                 (movies_df['country'].str.contains(selected_region, case=False, na=False) | (selected_region == "全部"))
             ]
 
             if not filtered_movies.empty:
+                # 隨機選取最多3部電影
                 random_movies = filtered_movies.sample(min(3, len(filtered_movies)))
 
                 movie_messages = []
@@ -214,10 +216,6 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text="請先選擇電影類型。"))
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text="請選擇一個選項。"))
-
-if __name__ == "__main__":
-    app.run(port=8000)
-
 
 
 # import pandas as pd
