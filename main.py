@@ -189,20 +189,20 @@ def handle_message(event):
                 for _, movie in random_movies.iterrows():
                     movie_message = (
                         f"片名: {movie['title']}\n"
-                        f"评分: {movie['rate']}\n"
-                        f"简介: {movie['information']}\n"
-                        f"地区: {movie['country']}\n"
-                        f"票房: {movie['box_office']}"
+                        f"評分: {movie['rate']}\n"
+                        f"簡介: {movie['information']}\n"
+                        f"地區: {movie['country']}\n"
+                    {movie['box_office']}"
                     )
                     movie_messages.append(TextSendMessage(text=movie_message))
 
                 line_bot_api.reply_message(event.reply_token, movie_messages)
             else:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text="没有符合条件的电影。"))
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text="沒有符合條件的電影。"))
         else:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text="请先选择电影类型。"))
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text="請先選擇電影類型。"))
     else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="请选擇一个选项。"))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="請選擇一個選項。"))
 
 if __name__ == "__main__":
     app.run(port=8000)
