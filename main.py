@@ -192,7 +192,7 @@ def handle_message(event):
                         f"評分: {movie['rate']}\n"
                         f"簡介: {movie['information']}\n"
                         f"地區: {movie['country']}\n"
-                        f"票房{movie['box_office']}"
+                        f"票房：{movie['box_office']}"
                     )
                     movie_messages.append(TextSendMessage(text=movie_message))
 
