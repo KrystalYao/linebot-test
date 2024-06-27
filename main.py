@@ -4,6 +4,7 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, FlexSendMessage, FollowEvent
+from linebot.models import ImageSendMessage
 
 app = Flask(__name__)
 
@@ -206,11 +207,10 @@ def handle_message(event):
                     )
                     movie_messages.append(TextSendMessage(text=movie_message))
                     
-                    movie_image_message = {
-                        "type": "image",
-                        "originalContentUrl": movie['picture'],
-                        "previewImageUrl": movie['picture']
-                    }
+                    movie_image_message = ImageSendMessage(
+                        original_content_url=movie['picture'],
+                        preview_image_url=movie['picture']
+                    )
                     movie_messages.append(movie_image_message)
                 
 
