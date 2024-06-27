@@ -181,15 +181,9 @@ def handle_message(event):
         if user_id in user_state and 'genre' in user_state[user_id]:
             user_state[user_id]['region'] = text
 
-            selected_region = user_state[user_id]['region']
-
-            if selected_region == "全部":
-                filtered_movies = movies_df
-            else:
-                filtered_movies = movies_df[movies_df['country'] == selected_region]
-
-            if not filtered_movies.empty:
-                random_movies = filtered_movies.sample(min(3, len(filtered_movies)))
+            # 从CSV文件中随机选择3部电影
+            if not movies_df.empty:
+                random_movies = movies_df.sample(min(3, len(movies_df)))
 
                 movie_messages = []
                 for _, movie in random_movies.iterrows():
@@ -197,6 +191,7 @@ def handle_message(event):
                         f"片名: {movie['title']}\n"
                         f"评分: {movie['rate']}\n"
                         f"简介: {movie['information']}\n"
+                        f"地区: {movie['country']}\n"
                         f"票房: {movie['box_office']}"
                     )
                     movie_messages.append(TextSendMessage(text=movie_message))
