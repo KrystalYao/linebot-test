@@ -36,6 +36,65 @@ def callback():
 
     return 'OK'
     
+@handler.add(FollowEvent)
+def handle_follow(event):
+    user_id = event.source.user_id
+
+    # 发送欢迎消息和选单
+    line_bot_api.reply_message(
+        event.reply_token,
+        [
+            TextSendMessage(text="您好，我是電影推薦小助手。"),
+            FlexSendMessage(
+                alt_text="電影選擇",
+                contents={
+                    "type": "bubble",
+                    "hero": {
+                        "type": "image",
+                        "url": "https://miro.medium.com/v2/resize:fit:1100/format:webp/0*T3hzZYnWBEOrQzM1.jpg",
+                        "size": "full",
+                        "aspectRatio": "18:10",
+                        "aspectMode": "cover",
+                        "action": {
+                            "type": "uri",
+                            "uri": "https://line.me/"
+                        }
+                    },
+                    "footer": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "spacing": "sm",
+                        "contents": [
+                            {
+                                "type": "button",
+                                "style": "primary",
+                                "height": "md",
+                                "action": {
+                                    "type": "message",
+                                    "label": "電影類型選擇",
+                                    "text": "電影類型選擇"
+                                }
+                            },
+                            {
+                                "type": "button",
+                                "style": "secondary",
+                                "height": "md",
+                                "action": {
+                                    "type": "uri",
+                                    "label": "自行輸入",
+                                    "uri": "https://line.me/"
+                                }
+                            }
+                        ],
+                        "flex": 0
+                    }
+                }
+            )
+        ]
+    )
+    
+    user_state[user_id] = 'menu_sent'
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_id = event.source.user_id
