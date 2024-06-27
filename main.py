@@ -2,6 +2,11 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, FlexSendMessage, FollowEvent
+import pandas as pd
+import random
+
+# 读取CSV文件到一个全局变量
+movies_df = pd.read_csv('action.csv')
 
 app = Flask(__name__)
 
@@ -99,7 +104,6 @@ def handle_message(event):
                        "科幻", "劇情", "冒險", "動作", "浪漫", "奇幻", "兒童", "默劇", "歷史",
                        "短片", "傳記", "音樂", "家庭", "成人", "脫口秀", "實境秀"]
 
-        # 构建按钮，style交替设置
         buttons = [
             {
                 "type": "button",
@@ -111,13 +115,11 @@ def handle_message(event):
                     "text": label
                 }
             }
-            for i, label in enumerate(movie_types)
+            for label in movie_types
         ]
 
-        # 将按钮分成每行4个的布局
         rows = [buttons[i:i + 4] for i in range(0, len(buttons), 4)]
 
-        # 调整最后一行的内容，保证每行都有4个按钮
         if len(rows[-1]) < 4:
             rows[-1].extend([
                 {"type": "button", "style": "link", "height": "md", "action": {"type": "message", "label": " ", "text": " "}}
@@ -138,13 +140,14 @@ def handle_message(event):
         )
 
         line_bot_api.reply_message(event.reply_token, flex_message)
+
     elif text in ["全部", "喜劇", "犯罪", "戰爭", "歌舞", "動畫", "驚悚", "懸疑", "恐怖",
                   "科幻", "劇情", "冒險", "動作", "浪漫", "奇幻", "兒童", "默劇", "歷史",
                   "短片", "傳記", "音樂", "家庭", "成人", "脫口秀", "實境秀"]:
-        # 用户选择了具体电影类型，发送包含"全部 亞洲 歐洲 英國 非洲 美國"的选单
+        user_state[user_id] = {'genre': text}
+
         regions = ["全部", "亞洲", "歐洲", "英國", "非洲", "美國"]
 
-        # 构建按钮，每行3个按钮的水平布局
         rows = [[
             {
                 "type": "button",
@@ -173,9 +176,80 @@ def handle_message(event):
         )
 
         line_bot_api.reply_message(event.reply_token, flex_message)
+
+    elif text in ["全部", "亞洲", "歐洲", "英國", "非洲", "美國"]:
+        if user_id in user_state and 'genre' in user_state[user_id]:
+            user_state[user_id]['region'] = text
+
+            selected_region = user_state[user_id]['region']
+
+            if selected_region == "全部":
+                filtered_movies = movies_df
+            else:
+                filtered_movies = movies_df[movies_df['country'] == selected_region]
+
+            if not filtered_movies.empty:
+                random_movies = filtered_movies.sample(min(3, len(filtered_movies)))
+
+                movie_messages = []
+                for _, movie in random_movies.iterrows():
+                    movie_message = (
+                        f"片名: {movie['title']}\n"
+                        f"评分: {movie['rate']}\n"
+                        f"简介: {movie['information']}\n"
+                        f"票房: {movie['box_office']}"
+                    )
+                    movie_messages.append(TextSendMessage(text=movie_message))
+
+                line_bot_api.reply_message(event.reply_token, movie_messages)
+            else:
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text="没有符合条件的电影。"))
+        else:
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text="请先选择电影类型。"))
     else:
-        # 其他消息处理
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="請選擇一個選項。"))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="请选擇一个选项。"))
 
 if __name__ == "__main__":
+    app.run(port=8000)
+
+    
+    
+       
+    #     # 用户选择了具体电影类型，发送包含"全部 亞洲 歐洲 英國 非洲 美國"的选单
+    #     countrys = ["全部", "亞洲", "歐洲", "英國", "非洲", "美國"]
+
+    #     # 构建按钮，每行3个按钮的水平布局
+    #     rows = [[
+    #         {
+    #             "type": "button",
+    #             "style": "link",
+    #             "height": "md",
+    #             "action": {
+    #                 "type": "message",
+    #                 "label": country,
+    #                 "text": country
+    #             }
+    #         }
+    #         for country in countrys[i:i + 3]
+    #     ] for i in range(0, len(countrys), 3)]
+
+    #     flex_message = FlexSendMessage(
+    #         alt_text="地區選擇",
+    #         contents={
+    #             "type": "bubble",
+    #             "body": {
+    #                 "type": "box",
+    #                 "layout": "vertical",
+    #                 "spacing": "sm",
+    #                 "contents": [{"type": "box", "layout": "horizontal", "contents": row} for row in rows]
+    #             }
+    #         }
+    #     )
+
+    #     line_bot_api.reply_message(event.reply_token, flex_message)
+    # else:
+    #     # 其他消息处理
+    #     line_bot_api.reply_message(event.reply_token, TextSendMessage(text="請選擇一個選項。"))
+
+#if __name__ == "__main__":
     app.run(port=8000)
