@@ -213,7 +213,6 @@ def handle_message(event):
                     }
                     movie_messages.append(movie_image_message)
                 
-                line_bot_api.reply_message(event.reply_token, movie_messages)
 
                 line_bot_api.reply_message(event.reply_token, movie_messages)
             else:
