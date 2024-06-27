@@ -1,8 +1,3 @@
-
-# LINE bot的Channel Access Token和Channel Secret
-LINE_BOT_API = '1PAiU+EnukB7WtoP+lZEZR1diJ7YfpnNJbvno/WW1PwdhBHeHtDAtzaN1hgGEp5YkQHXGMRaeeahCS6Nr1LTvqfRRheTlPdSs/NXRDxqSYFxihhg8nFzV9FRhTnx+cgG/RxWHLBfuxpsERqyOfDQ4wdB04t89/1O/w1cDnyilFU='
-HANDLER = '910973d1cee8b1ee4407254e3ca5fb2d'
-
 import pandas as pd
 import random
 from flask import Flask, request, abort
@@ -13,8 +8,8 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage, FlexSendM
 app = Flask(__name__)
 
 # LINE bot的Channel Access Token和Channel Secret
-LINE_BOT_API = '1'
-HANDLER = '2'
+LINE_BOT_API = '1PAiU+EnukB7WtoP+lZEZR1diJ7YfpnNJbvno/WW1PwdhBHeHtDAtzaN1hgGEp5YkQHXGMRaeeahCS6Nr1LTvqfRRheTlPdSs/NXRDxqSYFxihhg8nFzV9FRhTnx+cgG/RxWHLBfuxpsERqyOfDQ4wdB04t89/1O/w1cDnyilFU='
+HANDLER = '910973d1cee8b1ee4407254e3ca5fb2d'
 
 line_bot_api = LineBotApi(LINE_BOT_API)
 handler = WebhookHandler(HANDLER)
