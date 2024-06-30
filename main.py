@@ -260,7 +260,7 @@ def handle_message(event):
                                     "contents": [
                                         {
                                             "type": "text",
-                                            "text": movie['year'] + "年",
+                                            "text": str(movie['year']) + "年",
                                             "wrap": True,
                                             "color": "#8c8c8c",
                                             "size": "xs",
