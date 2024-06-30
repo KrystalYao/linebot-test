@@ -3,7 +3,7 @@ import random
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage, TextSendMessage, FlexSendMessage, FollowEvent, ImageSendMessage 
+from linebot.models import MessageEvent, TextMessage, TextSendMessage, FlexSendMessage, FollowEvent, ImageSendMessage,  
 
 app = Flask(__name__)
 
@@ -195,118 +195,100 @@ def handle_message(event):
 
                 movie_messages = []
                 for _, movie in random_movies.iterrows():
-                    movie_message = {
-                        "type": "bubble",
-                        "hero": {
-                            "type": "image",
-                            "url": movie['picture'],
-                            "size": "full",
-                            "aspectMode": "cover",
-                            "aspectRatio": "320:213"
-                        },
-                        "body": {
-                            "type": "box",
-                            "layout": "vertical",
-                            "contents": [
-                                {
-                                    "type": "text",
-                                    "text": movie['title'],
-                                    "weight": "bold",
-                                    "size": "sm",
-                                    "wrap": True
-                                },
-                                {
-                                    "type": "box",
-                                    "layout": "baseline",
-                                    "contents": [
-                                        {
-                                            "type": "icon",
-                                            "size": "xs",
-                                            "url": "https://developers.line.biz/assets/images/app-icons/messaging-api.png"
-                                        },
-                                        {
-                                            "type": "icon",
-                                            "size": "xs",
-                                            "url": "https://developers.line.biz/assets/images/app-icons/messaging-api.png"
-                                        },
-                                        {
-                                            "type": "icon",
-                                            "size": "xs",
-                                            "url": "https://developers.line.biz/assets/images/app-icons/messaging-api.png"
-                                        },
-                                        {
-                                            "type": "icon",
-                                            "size": "xs",
-                                            "url": "https://developers.line.biz/assets/images/app-icons/messaging-api.png"
-                                        },
-                                        {
-                                            "type": "icon",
-                                            "size": "xs",
-                                            "url": "https://developers.line.biz/assets/images/app-icons/messaging-api.png"
-                                        },
-                                        {
-                                            "type": "text",
-                                            "text": "4.7",  # 這裡需要根據實際評分數據來填寫
-                                            "size": "xs",
-                                            "color": "#8c8c8c",
-                                            "margin": "md",
-                                            "flex": 0
-                                        }
+                    movie_message = BubbleContainer(
+                        hero=ImageComponent(
+                            url=movie['picture'],
+                            size="full",
+                            aspect_mode="cover",
+                            aspect_ratio="320:213"
+                        ),
+                        body=BoxComponent(
+                            layout="vertical",
+                            spacing="sm",
+                            contents=[
+                                TextComponent(
+                                    text=movie['title'],
+                                    weight="bold",
+                                    size="sm",
+                                    wrap=True
+                                ),
+                                BoxComponent(
+                                    layout="baseline",
+                                    contents=[
+                                        IconComponent(
+                                            size="xs",
+                                            url="https://developers.line.biz/assets/images/app-icons/messaging-api.png"
+                                        ),
+                                        IconComponent(
+                                            size="xs",
+                                            url="https://developers.line.biz/assets/images/app-icons/messaging-api.png"
+                                        ),
+                                        IconComponent(
+                                            size="xs",
+                                            url="https://developers.line.biz/assets/images/app-icons/messaging-api.png"
+                                        ),
+                                        IconComponent(
+                                            size="xs",
+                                            url="https://developers.line.biz/assets/images/app-icons/messaging-api.png"
+                                        ),
+                                        IconComponent(
+                                            size="xs",
+                                            url="https://developers.line.biz/assets/images/app-icons/messaging-api.png"
+                                        ),
+                                        TextComponent(
+                                            text=str(movie['rate']),
+                                            size="xs",
+                                            color="#8c8c8c",
+                                            margin="md",
+                                            flex=0
+                                        )
                                     ]
-                                },
-                                {
-                                    "type": "box",
-                                    "layout": "vertical",
-                                    "contents": [
-                                        {
-                                            "type": "text",
-                                            "text": str(movie['year']),
-                                            "wrap": True,
-                                            "color": "#8c8c8c",
-                                            "size": "xs",
-                                            "flex": 5
-                                        },
-                                        {
-                                            "type": "text",
-                                            "text": movie['country'],
-                                            "wrap": True,
-                                            "color": "#8c8c8c",
-                                            "size": "xs",
-                                            "flex": 5
-                                        },
-                                        {
-                                            "type": "text",
-                                            "text": "票房",
-                                            "wrap": True,
-                                            "color": "#8c8c8c",
-                                            "size": "xs",
-                                            "flex": 5
-                                        },
-                                        {
-                                            "type": "text",
-                                            "text": str(movie['box_office']),  # 顯示票房資訊
-                                            "wrap": True,
-                                            "color": "#8c8c8c",
-                                            "size": "xs",
-                                            "flex": 5
-                                        }
+                                ),
+                                BoxComponent(
+                                    layout="vertical",
+                                    contents=[
+                                        TextComponent(
+                                            text=str(movie['year']),
+                                            wrap=True,
+                                            color="#8c8c8c",
+                                            size="xs",
+                                            flex=5
+                                        ),
+                                        TextComponent(
+                                            text=movie['country'],
+                                            wrap=True,
+                                            color="#8c8c8c",
+                                            size="xs",
+                                            flex=5
+                                        ),
+                                        TextComponent(
+                                            text="票房",
+                                            wrap=True,
+                                            color="#8c8c8c",
+                                            size="xs",
+                                            flex=5
+                                        ),
+                                        TextComponent(
+                                            text=str(movie['box_office']),
+                                            wrap=True,
+                                            color="#8c8c8c",
+                                            size="xs",
+                                            flex=5
+                                        )
                                     ]
-                                }
+                                )
                             ],
-                            "spacing": "sm",
-                            "paddingAll": "13px"
-                        }
-                    }
+                            padding_all="13px"
+                        )
+                    )
                     movie_messages.append(movie_message)
 
                 carousel_message = FlexSendMessage(
                     alt_text="電影推薦",
-                    contents={
-                        "type": "carousel",
-                        "contents": movie_messages
-                    }
+                    contents=CarouselContainer(
+                        contents=movie_messages
+                    )
                 )
-
                 line_bot_api.reply_message(event.reply_token, movie_messages)
             else:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text="沒有符合條件的電影。"))
