@@ -260,7 +260,7 @@ def handle_message(event):
                                     "contents": [
                                         {
                                             "type": "text",
-                                            "text": movie['year'],
+                                            "text": str(movie['year']),
                                             "wrap": True,
                                             "color": "#8c8c8c",
                                             "size": "xs",
@@ -297,7 +297,7 @@ def handle_message(event):
                             "paddingAll": "13px"
                         }
                     }
-                    movie_messages.append(bubble)
+                    movie_messages.append(movie_message)
 
                 carousel_message = FlexSendMessage(
                     alt_text="電影推薦",
