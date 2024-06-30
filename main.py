@@ -195,21 +195,117 @@ def handle_message(event):
 
                 movie_messages = []
                 for _, movie in random_movies.iterrows():
-                    movie_message = (
-                        f"電影名稱: {movie['title']}\n"
-                        f"年份: {movie['year']}\n"
-                        f"電影類型: {movie['genres']}\n"
-                        f"票房: {movie['box_office']}\n"
-                        f"評分: {movie['rate']}"
-                    )
-                    movie_messages.append(TextSendMessage(text=movie_message))
-                    
-                    # 加入電影海報圖片
-                    movie_image_message = ImageSendMessage(
-                        original_content_url=movie['picture'],
-                        preview_image_url=movie['picture']
-                    )
-                    movie_messages.append(movie_image_message)
+                    movie_message = {
+                        "type": "bubble",
+                        "hero": {
+                            "type": "image",
+                            "url": movie['picture'],
+                            "size": "full",
+                            "aspectMode": "cover",
+                            "aspectRatio": "320:213"
+                        },
+                        "body": {
+                            "type": "box",
+                            "layout": "vertical",
+                            "contents": [
+                                {
+                                    "type": "text",
+                                    "text": movie['title'],
+                                    "weight": "bold",
+                                    "size": "sm",
+                                    "wrap": True
+                                },
+                                {
+                                    "type": "box",
+                                    "layout": "baseline",
+                                    "contents": [
+                                        {
+                                            "type": "icon",
+                                            "size": "xs",
+                                            "url": "https://developers.line.biz/assets/images/app-icons/messaging-api.png"
+                                        },
+                                        {
+                                            "type": "icon",
+                                            "size": "xs",
+                                            "url": "https://developers.line.biz/assets/images/app-icons/messaging-api.png"
+                                        },
+                                        {
+                                            "type": "icon",
+                                            "size": "xs",
+                                            "url": "https://developers.line.biz/assets/images/app-icons/messaging-api.png"
+                                        },
+                                        {
+                                            "type": "icon",
+                                            "size": "xs",
+                                            "url": "https://developers.line.biz/assets/images/app-icons/messaging-api.png"
+                                        },
+                                        {
+                                            "type": "icon",
+                                            "size": "xs",
+                                            "url": "https://developers.line.biz/assets/images/app-icons/messaging-api.png"
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "4.7",  # 這裡需要根據實際評分數據來填寫
+                                            "size": "xs",
+                                            "color": "#8c8c8c",
+                                            "margin": "md",
+                                            "flex": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "box",
+                                    "layout": "vertical",
+                                    "contents": [
+                                        {
+                                            "type": "text",
+                                            "text": movie['year'] + "年",
+                                            "wrap": True,
+                                            "color": "#8c8c8c",
+                                            "size": "xs",
+                                            "flex": 5
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": movie['country'],
+                                            "wrap": True,
+                                            "color": "#8c8c8c",
+                                            "size": "xs",
+                                            "flex": 5
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "票房",
+                                            "wrap": True,
+                                            "color": "#8c8c8c",
+                                            "size": "xs",
+                                            "flex": 5
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": str(movie['box_office']),  # 顯示票房資訊
+                                            "wrap": True,
+                                            "color": "#8c8c8c",
+                                            "size": "xs",
+                                            "flex": 5
+                                        }
+                                    ]
+                                }
+                            ],
+                            "spacing": "sm",
+                            "paddingAll": "13px"
+                        }
+                    }
+                    bubbles.append(bubble)
+
+                carousel_message = FlexSendMessage(
+                    alt_text="電影推薦",
+                    contents={
+                        "type": "carousel",
+                        "contents": bubbles
+                    }
+                )
 
                 line_bot_api.reply_message(event.reply_token, movie_messages)
             else:
