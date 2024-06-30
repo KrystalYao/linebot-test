@@ -297,13 +297,13 @@ def handle_message(event):
                             "paddingAll": "13px"
                         }
                     }
-                    bubbles.append(bubble)
+                    movie_messages.append(bubble)
 
                 carousel_message = FlexSendMessage(
                     alt_text="電影推薦",
                     contents={
                         "type": "carousel",
-                        "contents": bubbles
+                        "contents": movie_messages
                     }
                 )
 
