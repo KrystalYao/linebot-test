@@ -208,7 +208,7 @@ def handle_message(event):
                     movie_image_message = ImageSendMessage(
                         original_content_url=movie['picture'],
                         preview_image_url=movie['picture']
-                    }
+                    )
                     movie_messages.append(movie_image_message)
 
                 line_bot_api.reply_message(event.reply_token, movie_messages)
