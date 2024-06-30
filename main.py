@@ -262,13 +262,6 @@ def handle_message(event):
                                             flex=5
                                         ),
                                         TextComponent(
-                                            text="票房",
-                                            wrap=True,
-                                            color="#8c8c8c",
-                                            size="xs",
-                                            flex=5
-                                        ),
-                                        TextComponent(
                                             text=str(movie['box_office']),
                                             wrap=True,
                                             color="#8c8c8c",
