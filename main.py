@@ -24,7 +24,7 @@ user_state = {}
 try:
     movies_df = pd.read_csv('movies.csv')
 except pd.errors.EmptyDataError:
-    movies_df = pd.DataFrame(columns=['title', 'year', 'genres', 'box_office', 'rate', 'country', 'picture'])
+    movies_df = pd.DataFrame(columns=['title', 'year', 'genres', 'rate', 'country', 'picture'])
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -217,14 +217,14 @@ def handle_message(event):
                                             color="#8c8c8c",
                                             size="xs",
                                             flex=5
-                                        ),
-                                        TextComponent(
-                                            text=str(movie['box_office']),
-                                            wrap=True,
-                                            color="#8c8c8c",
-                                            size="xs",
-                                            flex=5
                                         )
+                                        # TextComponent(
+                                        #     text=str(movie['box_office']),
+                                        #     wrap=True,
+                                        #     color="#8c8c8c",
+                                        #     size="xs",
+                                        #     flex=5
+                                        # )
                                     ]
                                 )
                             ],
