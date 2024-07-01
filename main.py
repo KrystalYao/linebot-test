@@ -227,7 +227,18 @@ def handle_message(event):
                                             flex=5,
                                             margin="5px"
                                         ),
-                                        TextComponent(
+                                        ButtonComponent(
+                                            style="link",
+                                            height="sm",
+                                            action=MessageAction(
+                                                label="點選可查看網友評論",
+                                                text=f"{movie['title']}\n"
+                                                     f"評論1: {movie['評論1']}\n"
+                                                     f"評論2: {movie['評論2']}\n"
+                                                     f"評論3: {movie['評論3']}"
+                                            )
+                                        ),
+                                        TextComponent(  # 显示文本样式
                                             text="點選可查看網友評論",
                                             wrap=True,
                                             color="#2828FF",
