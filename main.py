@@ -2,7 +2,7 @@ import pandas as pd
 import random 
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
-from linebot.exceptions import InvalidSignatureError, LineBotApiError
+from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage, FlexSendMessage, FollowEvent, ImageSendMessage, IconComponent,
     BubbleContainer, BoxComponent, ButtonComponent, CarouselContainer, ImageComponent, MessageAction, TextComponent, URIAction
@@ -246,20 +246,19 @@ def handle_message(event):
                     )
         
                 
-                    movie_messages.append(FlexSendMessage(alt_text="Movie Recommendation", contents=movie_message))
-
-                try:
-                    line_bot_api.reply_message(event.reply_token, movie_messages)
-                except LineBotApiError as e:
-                    print(f"LineBotApiError: {e.status_code} {e.error.message}")
+                   movie_messages.append(movie_message)
+                
+                line_bot_api.reply_message(event.reply_token, movie_messages)
             else:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text="沒有符合條件的電影。"))
         else:
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text="請先選擇電影類型。"))
+    else:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="請選擇一個選項。"))
 
 if __name__ == "__main__":
     app.run(port=8000)
-
+這段程式碼包括了處理使用者訊息、生成動態 Flex Message
 
 # import pandas as pd
 # import random
