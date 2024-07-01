@@ -235,7 +235,7 @@ def handle_message(event):
                                     ]
                                 )
                             ],
-                            padding_all="10px"
+                            padding_all="13px"
                         )
                     )
                     movie_messages.append(movie_message)
