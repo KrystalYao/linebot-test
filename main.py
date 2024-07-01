@@ -3,7 +3,10 @@ import random
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage, TextSendMessage, FlexSendMessage, FollowEvent, ImageSendMessage,  
+from linebot.models import (
+    MessageEvent, TextMessage, TextSendMessage, FlexSendMessage, FollowEvent, ImageSendMessage,
+    BubbleContainer, BoxComponent, ButtonComponent, CarouselContainer, ImageComponent, MessageAction, TextComponent
+)
 
 app = Flask(__name__)
 
@@ -101,8 +104,11 @@ def handle_message(event):
 
         if len(rows[-1]) < 4:
             rows[-1].extend([
-                {"type": "button", "style": "link", "height": "md", "action": {"type": "message", "label": " ", "text": " "}}
-                for _ in range(4 - len(rows[-1]))
+                ButtonComponent(
+                    style="link",
+                    height="md",
+                    action=MessageAction(label=" ", text=" ")
+                ) for _ in range(4 - len(rows[-1]))
             ])
 
         flex_message = FlexSendMessage(
