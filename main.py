@@ -195,9 +195,8 @@ def handle_message(event):
                                     contents=[
                                         TextComponent(
                                             text=str(movie['rate']),
-                                            size="sm",
+                                            size="md",
                                             color="#8c8c8c",
-                                            margin="md",
                                             flex=0
                                         )
                                     ]
@@ -217,14 +216,16 @@ def handle_message(event):
                                             wrap=True,
                                             color="#8c8c8c",
                                             size="md",
-                                            flex=5
+                                            flex=5,
+                                            margin="5px"
                                         ),
                                         TextComponent(
                                             text=movie['summary'],
                                             wrap=True,
                                             color="#8c8c8c",
                                             size="md",
-                                            flex=5
+                                            flex=5,
+                                            margin="5px"
                                         ),
                                         TextComponent(
                                             text="你好",
