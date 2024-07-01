@@ -241,7 +241,7 @@ def handle_message(event):
                                         #     color="#8c8c8c",
                                         #     size="xs",
                                         #     flex=5
-                                        # )
+                                        )
                                     ]
                                 )
                             ],
