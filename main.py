@@ -250,19 +250,7 @@ def handle_message(event):
                             padding_all="13px"
                         )
                     )
-                    
-                    # 添加文本样式的 TextComponent
-                    text_style_component = TextComponent(
-                        text="點選可查看網友評論",
-                        wrap=True,
-                        color="#2828FF",
-                        size="md",
-                        flex=5,
-                        align="end",
-                        decoration="underline"
-                    )
-
-                    movie_message.body.contents.append(text_style_component)
+        
                 
                     movie_messages.append(movie_message)
 
