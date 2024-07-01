@@ -4,7 +4,7 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage, FlexSendMessage, FollowEvent, ImageSendMessage,
+    MessageEvent, TextMessage, TextSendMessage, FlexSendMessage, FollowEvent, ImageSendMessage, IconComponent,
     BubbleContainer, BoxComponent, ButtonComponent, CarouselContainer, ImageComponent, MessageAction, TextComponent, URIAction
 )
 
@@ -228,7 +228,7 @@ def handle_message(event):
                                             margin="5px"
                                         ),
                                         TextComponent(
-                                            text="你好",
+                                            text="點選可查看網友評論",
                                             wrap=True,
                                             color="#2828FF",
                                             size="md",
@@ -248,6 +248,22 @@ def handle_message(event):
                             padding_all="13px"
                         )
                     )
+                    
+                    review_text = f"{movie['title']}\n"
+                    for i in range(1, 4):  # Assuming there are three reviews columns in your CSV
+                        review_text += f"評論{i}: {movie[f'評論{i}']}\n"
+
+                    movie_message.body.contents.append(
+                        TextComponent(
+                            type="text",
+                            text=review_text,
+                            wrap=True,
+                            color="#8c8c8c", 
+                            size="sm",
+                            margin="md"
+                        )
+                    )
+
                     movie_messages.append(movie_message)
 
                 carousel_message = FlexSendMessage(
