@@ -177,7 +177,7 @@ def handle_message(event):
                             url=movie['picture'],
                             size="full",
                             aspect_mode="cover",
-                            aspect_ratio="320:213"
+                            aspect_ratio="150:100"
                         ),
                         body=BoxComponent(
                             layout="vertical",
