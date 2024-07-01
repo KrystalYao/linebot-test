@@ -260,7 +260,7 @@ def handle_message(event):
                 #         contents=movie_messages
                 #     )
                 # )
-                line_bot_api.reply_message(event.reply_token, carousel_message)
+                line_bot_api.reply_message(event.reply_token, movie_message)
             else:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text="沒有符合條件的電影。"))
         else:
