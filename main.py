@@ -237,15 +237,6 @@ def handle_message(event):
                                                      f"評論2: {movie['評論2']}\n"
                                                      f"評論3: {movie['評論3']}"
                                             )
-                                        ),
-                                        TextComponent(  # 显示文本样式
-                                            text="點選可查看網友評論",
-                                            wrap=True,
-                                            color="#2828FF",
-                                            size="md",
-                                            flex=5,
-                                            align="end",
-                                            decoration="underline"
                                         # TextComponent(
                                         #     text=str(movie['box_office']),
                                         #     wrap=True,
@@ -260,29 +251,27 @@ def handle_message(event):
                         )
                     )
                     
-                    review_text = f"{movie['title']}\n"
-                    for i in range(1, 4):  # Assuming there are three reviews columns in your CSV
-                        review_text += f"評論{i}: {movie[f'評論{i}']}\n"
-
-                    movie_message.body.contents.append(
-                        TextComponent(
-                            type="text",
-                            text=review_text,
-                            wrap=True,
-                            color="#8c8c8c", 
-                            size="sm",
-                            margin="md"
-                        )
+                    # 添加文本样式的 TextComponent
+                    text_style_component = TextComponent(
+                        text="點選可查看網友評論",
+                        wrap=True,
+                        color="#2828FF",
+                        size="md",
+                        flex=5,
+                        align="end",
+                        decoration="underline"
                     )
 
+                    movie_message.body.contents.append(text_style_component)
+                
                     movie_messages.append(movie_message)
 
-                carousel_message = FlexSendMessage(
-                    alt_text="電影推薦",
-                    contents=CarouselContainer(
-                        contents=movie_messages
-                    )
-                )
+                # carousel_message = FlexSendMessage(
+                #     alt_text="電影推薦",
+                #     contents=CarouselContainer(
+                #         contents=movie_messages
+                #     )
+                # )
                 line_bot_api.reply_message(event.reply_token, carousel_message)
             else:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text="沒有符合條件的電影。"))
