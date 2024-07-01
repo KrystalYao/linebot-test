@@ -173,6 +173,7 @@ def handle_message(event):
                 movie_messages = []
                 for _, movie in random_movies.iterrows():
                     movie_message = BubbleContainer(
+                        size="micro",
                         hero=ImageComponent(
                             url=movie['picture'],
                             size="full",
