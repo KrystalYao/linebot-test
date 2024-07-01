@@ -237,12 +237,6 @@ def handle_message(event):
                                                      f"評論2: {movie['評論2']}\n"
                                                      f"評論3: {movie['評論3']}"
                                             )
-                                        # TextComponent(
-                                        #     text=str(movie['box_office']),
-                                        #     wrap=True,
-                                        #     color="#8c8c8c",
-                                        #     size="xs",
-                                        #     flex=5
                                         )
                                     ]
                                 )
@@ -253,13 +247,7 @@ def handle_message(event):
         
                 
                     movie_messages.append(movie_message)
-
-                # carousel_message = FlexSendMessage(
-                #     alt_text="電影推薦",
-                #     contents=CarouselContainer(
-                #         contents=movie_messages
-                #     )
-                # )
+                    
                 line_bot_api.reply_message(event.reply_token, movie_message)
             else:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text="沒有符合條件的電影。"))
