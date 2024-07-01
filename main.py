@@ -177,7 +177,7 @@ def handle_message(event):
                             url=movie['picture'],
                             size="full",
                             aspect_mode="cover",
-                            aspect_ratio="90：60"
+                            aspect_ratio="150：100"
                         ),
                         body=BoxComponent(
                             layout="vertical",
@@ -235,7 +235,7 @@ def handle_message(event):
                                     ]
                                 )
                             ],
-                            padding_all="13px"
+                            padding_all="8px"
                         )
                     )
                     movie_messages.append(movie_message)
