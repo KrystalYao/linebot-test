@@ -24,7 +24,7 @@ user_state = {}
 try:
     movies_df = pd.read_csv('movies.csv')
 except pd.errors.EmptyDataError:
-    movies_df = pd.DataFrame(columns=['title', 'year', 'genres', 'rate', 'country', 'picture'])
+    movies_df = pd.DataFrame(columns=['title', 'year', 'genres', 'rate', 'country', 'picture','summary'])
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -177,7 +177,7 @@ def handle_message(event):
                             url=movie['picture'],
                             size="full",
                             aspect_mode="cover",
-                            aspect_ratio="320:213"
+                            aspect_ratio="320:300"
                         ),
                         body=BoxComponent(
                             layout="vertical",
@@ -186,7 +186,7 @@ def handle_message(event):
                                 TextComponent(
                                     text=movie['title'],
                                     weight="bold",
-                                    size="sm",
+                                    size="md",
                                     wrap=True
                                 ),
                                 BoxComponent(
@@ -194,7 +194,7 @@ def handle_message(event):
                                     contents=[
                                         TextComponent(
                                             text=str(movie['rate']),
-                                            size="xs",
+                                            size="m",
                                             color="#8c8c8c",
                                             margin="md",
                                             flex=0
@@ -208,14 +208,21 @@ def handle_message(event):
                                             text=str(movie['year']),
                                             wrap=True,
                                             color="#8c8c8c",
-                                            size="xs",
+                                            size="md",
                                             flex=5
                                         ),
                                         TextComponent(
                                             text=movie['country'],
                                             wrap=True,
                                             color="#8c8c8c",
-                                            size="xs",
+                                            size="md",
+                                            flex=5
+                                        ),
+                                        TextComponent(
+                                            text=movie['summary'],
+                                            wrap=True,
+                                            color="#8c8c8c",
+                                            size="md",
                                             flex=5
                                         )
                                         # TextComponent(
