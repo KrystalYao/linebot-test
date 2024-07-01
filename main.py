@@ -4,7 +4,7 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
-    URIAction,MessageEvent, TextMessage, TextSendMessage, FlexSendMessage, FollowEvent, ImageSendMessage,
+    MessageEvent, TextMessage, TextSendMessage, FlexSendMessage, FollowEvent, ImageSendMessage,
     BubbleContainer, BoxComponent, ButtonComponent, CarouselContainer, ImageComponent, MessageAction, TextComponent
 )
 
@@ -194,7 +194,7 @@ def handle_message(event):
                                     contents=[
                                         TextComponent(
                                             text=str(movie['rate']),
-                                            size="m",
+                                            size="sm",
                                             color="#8c8c8c",
                                             margin="md",
                                             flex=0
