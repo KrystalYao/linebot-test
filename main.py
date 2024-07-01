@@ -5,7 +5,7 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage, FlexSendMessage, FollowEvent, ImageSendMessage,
-    BubbleContainer, BoxComponent, ButtonComponent, CarouselContainer, ImageComponent, MessageAction, TextComponent
+    BubbleContainer, BoxComponent, ButtonComponent, CarouselContainer, ImageComponent, MessageAction, TextComponent, URIAction
 )
 
 app = Flask(__name__)
