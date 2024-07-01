@@ -1,5 +1,5 @@
 import pandas as pd
-import random
+import random 
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -177,7 +177,7 @@ def handle_message(event):
                             url=movie['picture'],
                             size="full",
                             aspect_mode="cover",
-                            aspect_ratio="1.51：1"
+                            aspect_ratio="320:213"
                         ),
                         body=BoxComponent(
                             layout="vertical",
