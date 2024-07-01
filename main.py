@@ -225,7 +225,16 @@ def handle_message(event):
                                             color="#8c8c8c",
                                             size="md",
                                             flex=5
-                                        )
+                                        ),
+                                        TextComponent(
+                                            text="你好",
+                                            wrap=True,
+                                            color="#2828FF",
+                                            size="xs",
+                                            flex=5,
+                                            style="normal",
+                                            align="end",
+                                            decoration="underline"
                                         # TextComponent(
                                         #     text=str(movie['box_office']),
                                         #     wrap=True,
