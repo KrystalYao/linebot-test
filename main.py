@@ -46,48 +46,32 @@ def handle_follow(event):
             TextSendMessage(text="您好，我是電影推薦小助手。"),
             FlexSendMessage(
                 alt_text="電影選擇",
-                contents={
-                    "type": "bubble",
-                    "hero": {
-                        "type": "image",
-                        "url": "https://miro.medium.com/v2/resize:fit:1100/format:webp/0*T3hzZYnWBEOrQzM1.jpg",
-                        "size": "full",
-                        "aspectRatio": "18:10",
-                        "aspectMode": "cover",
-                        "action": {
-                            "type": "uri",
-                            "uri": "https://line.me/"
-                        }
-                    },
-                    "footer": {
-                        "type": "box",
-                        "layout": "vertical",
-                        "spacing": "sm",
-                        "contents": [
-                            {
-                                "type": "button",
-                                "style": "primary",
-                                "height": "md",
-                                "action": {
-                                    "type": "message",
-                                    "label": "電影類型選擇",
-                                    "text": "電影類型選擇"
-                                }
-                            },
-                            {
-                                "type": "button",
-                                "style": "secondary",
-                                "height": "md",
-                                "action": {
-                                    "type": "uri",
-                                    "label": "自行輸入",
-                                    "uri": "https://line.me/"
-                                }
-                            }
+                contents=BubbleContainer(
+                    hero=ImageComponent(
+                        url="https://miro.medium.com/v2/resize:fit:1100/format:webp/0*T3hzZYnWBEOrQzM1.jpg",
+                        size="full",
+                        aspect_ratio="18:10",
+                        aspect_mode="cover",
+                        action=URIAction(uri="https://line.me/")
+                    ),
+                    footer=BoxComponent(
+                        layout="vertical",
+                        spacing="sm",
+                        contents=[
+                            ButtonComponent(
+                                style="primary",
+                                height="md",
+                                action=MessageAction(label="電影類型選擇", text="電影類型選擇")
+                            ),
+                            ButtonComponent(
+                                style="secondary",
+                                height="md",
+                                action=URIAction(label="自行輸入", uri="https://line.me/")
+                            )
                         ],
-                        "flex": 0
-                    }
-                }
+                        flex=0
+                    )
+                )
             )
         ]
     )
@@ -105,18 +89,13 @@ def handle_message(event):
                        "短片", "傳記", "音樂", "家庭", "成人", "脫口秀", "實境秀"]
 
         buttons = [
-            {
-                "type": "button",
-                "style": "link",
-                "height": "md",
-                "action": {
-                    "type": "message",
-                    "label": label,
-                    "text": label
-                }
-            }
-            for label in movie_types
+            ButtonComponent(
+                style="link",
+                height="md",
+                action=MessageAction(label=label, text=label)
+            ) for label in movie_types
         ]
+
 
         rows = [buttons[i:i + 4] for i in range(0, len(buttons), 4)]
 
@@ -128,15 +107,13 @@ def handle_message(event):
 
         flex_message = FlexSendMessage(
             alt_text="電影類型選擇",
-            contents={
-                "type": "bubble",
-                "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "spacing": "sm",
-                    "contents": [{"type": "box", "layout": "horizontal", "contents": row} for row in rows]
-                }
-            }
+            contents=BubbleContainer(
+                body=BoxComponent(
+                    layout="vertical",
+                    spacing="sm",
+                    contents=[BoxComponent(layout="horizontal", contents=row) for row in rows]
+                )
+            )
         )
 
         line_bot_api.reply_message(event.reply_token, flex_message)
@@ -149,32 +126,23 @@ def handle_message(event):
         regions = ["全部", "亞洲", "歐洲", "英國", "非洲", "United States"]
 
         rows = [[
-            {
-                "type": "button",
-                "style": "link",
-                "height": "md",
-                "action": {
-                    "type": "message",
-                    "label": region,
-                    "text": region
-                }
-            }
-            for region in regions[i:i + 3]
+            ButtonComponent(
+                style="link",
+                height="md",
+                action=MessageAction(label=region, text=region)
+            ) for region in regions[i:i + 3]
         ] for i in range(0, len(regions), 3)]
 
         flex_message = FlexSendMessage(
             alt_text="地區選擇",
-            contents={
-                "type": "bubble",
-                "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "spacing": "sm",
-                    "contents": [{"type": "box", "layout": "horizontal", "contents": row} for row in rows]
-                }
-            }
+            contents=BubbleContainer(
+                body=BoxComponent(
+                    layout="vertical",
+                    spacing="sm",
+                    contents=[BoxComponent(layout="horizontal", contents=row) for row in rows]
+                )
+            )
         )
-
         line_bot_api.reply_message(event.reply_token, flex_message)
 
     elif text in ["全部", "亞洲", "歐洲", "英國", "非洲", "United States"]:
@@ -189,6 +157,9 @@ def handle_message(event):
                 (movies_df['genres'].str.contains(selected_genre, case=False, na=False) | (selected_genre == "全部")) &
                 (movies_df['country'].str.contains(selected_region, case=False, na=False) | (selected_region == "全部"))
             ]
+            print(f"Selected Genre: {selected_genre}")
+            print(f"Selected Region: {selected_region}")
+            print(f"Filtered Movies: {filtered_movies}")
 
             if not filtered_movies.empty:
                 random_movies = filtered_movies.sample(min(3, len(filtered_movies)))
@@ -215,26 +186,6 @@ def handle_message(event):
                                 BoxComponent(
                                     layout="baseline",
                                     contents=[
-                                        IconComponent(
-                                            size="xs",
-                                            url="https://developers.line.biz/assets/images/app-icons/messaging-api.png"
-                                        ),
-                                        IconComponent(
-                                            size="xs",
-                                            url="https://developers.line.biz/assets/images/app-icons/messaging-api.png"
-                                        ),
-                                        IconComponent(
-                                            size="xs",
-                                            url="https://developers.line.biz/assets/images/app-icons/messaging-api.png"
-                                        ),
-                                        IconComponent(
-                                            size="xs",
-                                            url="https://developers.line.biz/assets/images/app-icons/messaging-api.png"
-                                        ),
-                                        IconComponent(
-                                            size="xs",
-                                            url="https://developers.line.biz/assets/images/app-icons/messaging-api.png"
-                                        ),
                                         TextComponent(
                                             text=str(movie['rate']),
                                             size="xs",
