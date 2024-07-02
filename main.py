@@ -55,7 +55,7 @@ def handle_follow(event):
                         size="full",
                         aspect_ratio="18:10",
                         aspect_mode="cover",
-                        action=URIAction(uri="https://line.me/")
+                        action=URIAction(uri="https://line.me/")  #接gpt
                     ),
                     footer=BoxComponent(
                         layout="vertical",
@@ -229,26 +229,26 @@ def handle_message(event):
                                         ),
                                         ButtonComponent(
                                             style="link",
+                                            text="點選可查看網友評論",
                                             height="sm",
+                                            color="#2828FF",
+                                            size="xs",
+                                            align="end",
+                                            decoration="underline",
                                             action=MessageAction(
                                                 label="點選可查看網友評論",
-                                                text=f"{movie['title']}\n"
-                                                     f"評論1: {movie['評論1']}\n"
-                                                     f"評論2: {movie['評論2']}\n"
-                                                     f"評論3: {movie['評論3']}"
+                                                text=f"{movie['title']}\n評論1: {movie['評論1']}\n評論2: {movie['評論2']}\n評論3: {movie['評論3']}"
                                             )
                                         )
                                     ]
                                 )
-                            ],
-                            padding_all="13px"
-                        )
+                            ]
+                        ),
+                        padding_all="13px"
                     )
-        
+                    movie_messages.append(movie_message)
                 
-                   movie_messages.append(movie_message)
-                
-                line_bot_api.reply_message(event.reply_token, movie_messages)
+                line_bot_api.reply_message(event.reply_token, FlexSendMessage(alt_text="電影推薦", contents=CarouselContainer(contents=movie_messages)))
             else:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text="沒有符合條件的電影。"))
         else:
@@ -258,7 +258,6 @@ def handle_message(event):
 
 if __name__ == "__main__":
     app.run(port=8000)
-這段程式碼包括了處理使用者訊息、生成動態 Flex Message
 
 # import pandas as pd
 # import random
