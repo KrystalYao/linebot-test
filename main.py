@@ -261,7 +261,6 @@ def handle_message(event):
         line_bot_api.reply_message(
         event.reply_token,
         [
-            TextSendMessage(text="請選擇一個選項。"),
             FlexSendMessage(
                 alt_text="電影選擇",
                 contents=BubbleContainer(
