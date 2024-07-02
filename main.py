@@ -163,10 +163,7 @@ def handle_message(event):
                 (movies_df['genres'].str.contains(selected_genre, case=False, na=False) | (selected_genre == "全部")) &
                 (movies_df['country'].str.contains(selected_region, case=False, na=False) | (selected_region == "全部"))
             ]
-            print(f"Selected Genre: {selected_genre}")
-            print(f"Selected Region: {selected_region}")
-            print(f"Filtered Movies: {filtered_movies}")
-
+        
             if not filtered_movies.empty:
                 random_movies = filtered_movies.sample(min(3, len(filtered_movies)))
 
