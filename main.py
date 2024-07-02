@@ -89,7 +89,7 @@ def handle_message(event):
     if text == "電影類型選擇":
         movie_types = ["全部", "喜劇", "犯罪", "戰爭", "歌舞", "動畫", "驚悚", "懸疑", "恐怖",
                        "科幻", "劇情", "冒險", "Action", "浪漫", "奇幻", "兒童", "默劇", "歷史",
-                       "短片", "傳記", "音樂", "家庭", "成人", "脫口秀", "實境秀"]
+                       "短片", "傳記", "音樂", "家庭"]
 
         buttons = [
             ButtonComponent(
@@ -126,7 +126,7 @@ def handle_message(event):
 
     elif text in ["全部", "喜劇", "犯罪", "戰爭", "歌舞", "動畫", "驚悚", "懸疑", "恐怖",
                   "科幻", "劇情", "冒險", "Action", "浪漫", "奇幻", "兒童", "默劇", "歷史",
-                  "短片", "傳記", "音樂", "家庭", "成人", "脫口秀", "實境秀"]:
+                  "短片", "傳記", "音樂", "家庭"]:
         user_state[user_id] = {'genre': text}
 
         regions = ["全部", "亞洲", "歐洲", "英國", "非洲", "美國"]
@@ -172,8 +172,12 @@ def handle_message(event):
 
                 movie_messages = []
                 for _, movie in random_movies.iterrows():
+                    # 隨機選擇兩則評論
+                    comments = random.sample([movie['評論1'], movie['評論2'], movie['評論3'], movie['評論4'], movie['評論5']], 2)
+                    comments_text = "\n".join([f"評論{i+1}: {comment}" for i, comment in enumerate(comments)])
+                
                     movie_message = BubbleContainer(
-                        size="hecto",
+                        size="deca",
                         hero=ImageComponent(
                             url=movie['picture'],
                             size="full",
@@ -223,7 +227,7 @@ def handle_message(event):
                                             text=movie['summary'],
                                             wrap=True,
                                             color="#8c8c8c",
-                                            size="md",
+                                            size="sm",
                                             flex=5,
                                             margin="5px"
                                         ),
@@ -237,7 +241,7 @@ def handle_message(event):
                                             decoration="underline",
                                             action=MessageAction(
                                                 label="點選可查看網友評論",
-                                                text=f"{movie['title']}\n評論1: {movie['評論1']}\n評論2: {movie['評論2']}"
+                                                text=f"{movie['title']}\n{comments_text}"
                                             )
                                         )
                                     ]
