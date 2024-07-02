@@ -237,7 +237,7 @@ def handle_message(event):
                                             decoration="underline",
                                             action=MessageAction(
                                                 label="點選可查看網友評論",
-                                                text=f"{movie['title']}\n評論1: {movie['評論1']}\n評論2: {movie['評論2']}\n評論3: {movie['評論3']}"
+                                                text=f"{movie['title']}\n評論1: {movie['評論1']}\n評論2: {movie['評論2']}"
                                             )
                                         )
                                     ]
