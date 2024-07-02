@@ -158,10 +158,16 @@ def handle_message(event):
             selected_genre = user_state[user_id]['genre']
             selected_region = user_state[user_id]['region']
 
+            if selected_genre == "全部":
+            selected_genre = ""
+
+            if selected_region == "全部":
+            selected_region = ""
+
             # 根据用户选择的类型和地区筛选电影
             filtered_movies = movies_df[
-                (movies_df['genres'].str.contains(selected_genre, case=False, na=False) | (selected_genre == "全部")) &
-                (movies_df['country'].str.contains(selected_region, case=False, na=False) | (selected_region == "全部"))
+                (movies_df['genres'].str.contains(selected_genre, case=False, na=False)) &
+                (movies_df['country'].str.contains(selected_region, case=False, na=False))
             ]
         
             if not filtered_movies.empty:
