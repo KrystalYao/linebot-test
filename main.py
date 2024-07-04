@@ -152,46 +152,45 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, flex_message)
                       
     elif text in ["亞洲", "歐洲", "英國", "非洲", "美國"]:
-    if user_id in user_state and 'genre' in user_state[user_id]:
-        user_state[user_id]['region'] = text
+        if user_id in user_state and 'genre' in user_state[user_id]:
+            user_state[user_id]['region'] = text
 
-        selected_genre = user_state[user_id]['genre']
-        selected_region = user_state[user_id]['region']
+            selected_genre = user_state[user_id]['genre']
+            selected_region = user_state[user_id]['region']
 
-        if selected_genre == "全部":
-            selected_genre = ""
+            if selected_genre == "全部":
+                selected_genre = ""
 
-        if selected_region == "歐洲":
-            europe_countries = [
-                "奧地利", "比利時", "保加利亞", "克羅埃西亞", "賽普勒斯", "捷克", "丹麥", "愛沙尼亞",
-                "芬蘭", "法國", "德國", "希臘", "匈牙利", "愛爾蘭", "義大利", "拉脫維亞", "立陶宛",
-                "盧森堡", "馬爾他", "荷蘭", "波蘭", "葡萄牙", "羅馬尼亞", "斯洛伐克", "斯洛維尼亞",
-                "西班牙", "瑞典"
-            ]
+            if selected_region == "歐洲":
+                europe_countries = [
+                    "奧地利", "比利時", "保加利亞", "克羅埃西亞", "賽普勒斯", "捷克", "丹麥", "愛沙尼亞",
+                    "芬蘭", "法國", "德國", "希臘", "匈牙利", "愛爾蘭", "義大利", "拉脫維亞", "立陶宛",
+                    "盧森堡", "馬爾他", "荷蘭", "波蘭", "葡萄牙", "羅馬尼亞", "斯洛伐克", "斯洛維尼亞",
+                    "西班牙", "瑞典"
+                ]
 
-            filtered_movies = movies_df[
-                (movies_df['genres'].str.contains(selected_genre, case=False, na=False)) &
-                (movies_df['country'].isin(europe_countries))
-            ]
-        elif selected_region == "亞洲":
-            asian_countries = [
-                "中國大陸", "中國香港", "台灣", "日本", "韓國", "菲律賓", "印尼", "泰國",
-                "馬來西亞", "新加坡", "越南", "柬埔寨", "緬甸", "汶萊"
-            ]
+                filtered_movies = movies_df[
+                    (movies_df['genres'].str.contains(selected_genre, case=False, na=False)) &
+                    (movies_df['country'].isin(europe_countries))
+                ]
+            elif selected_region == "亞洲":
+                asian_countries = [
+                    "中國大陸", "中國香港", "台灣", "日本", "韓國", "菲律賓", "印尼", "泰國",
+                    "馬來西亞", "新加坡", "越南", "柬埔寨", "緬甸", "汶萊"
+                ]
 
             filtered_movies = movies_df[
                 (movies_df['genres'].str.contains(selected_genre, case=False, na=False)) &
                 (movies_df['country'].isin(asian_countries))
-            ]
-        else:
-            filtered_movies = movies_df[
-                (movies_df['genres'].str.contains(selected_genre, case=False, na=False)) &
-                (movies_df['country'].str.contains(selected_region, case=False, na=False))
-            ]
+                ]
+            else:
+                filtered_movies = movies_df[
+                    (movies_df['genres'].str.contains(selected_genre, case=False, na=False)) &
+                    (movies_df['country'].str.contains(selected_region, case=False, na=False))
+                ]
 
-        if not filtered_movies.empty:
-            random_movies = filtered_movies.sample(min(3, len(filtered_movies)))
-        
+            if not filtered_movies.empty:
+                random_movies = filtered_movies.sample(min(3, len(filtered_movies)))
                 movie_messages = []
                 for _, movie in random_movies.iterrows():
                     # 隨機選擇兩則評論
