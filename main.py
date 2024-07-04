@@ -14,8 +14,8 @@ import traceback
 app = Flask(__name__)
 
 # LINE bot的Channel Access Token和Channel Secret
-LINE_BOT_API = '1PAiU+EnukB7WtoP+lZEZR1diJ7YfpnNJbvno/WW1PwdhBHeHtDAtzaN1hgGEp5YkQHXGMRaeeahCS6Nr1LTvqfRRheTlPdSs/NXRDxqSYFxihhg8nFzV9FRhTnx+cgG/RxWHLBfuxpsERqyOfDQ4wdB04t89/1O/w1cDnyilFU='
-HANDLER = '910973d1cee8b1ee4407254e3ca5fb2d'
+LINE_BOT_API = os.getenv('1PAiU+EnukB7WtoP+lZEZR1diJ7YfpnNJbvno/WW1PwdhBHeHtDAtzaN1hgGEp5YkQHXGMRaeeahCS6Nr1LTvqfRRheTlPdSs/NXRDxqSYFxihhg8nFzV9FRhTnx+cgG/RxWHLBfuxpsERqyOfDQ4wdB04t89/1O/w1cDnyilFU=')
+HANDLER =os.getenv( '910973d1cee8b1ee4407254e3ca5fb2d')
 openai.api_key = os.getenv('sk-proj-lnhWX99wOIGlIjhuSip8T3BlbkFJsF081MICbsTamayZ9CGh')
 
 line_bot_api = LineBotApi(LINE_BOT_API)
@@ -105,12 +105,20 @@ def handle_message(event):
                 event.reply_token,
                 TextSendMessage(text=GPT_answer)
             )
-        except:
+        except Exception as e:
+            print(traceback.format_exc())  # 在後臺顯示詳細的錯誤訊息
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage('你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息')
+                TextSendMessage('發生了一些問題，請稍後再試。')
             )
         user_state[user_id] = 'menu_sent'
+    
+        # except:
+        #     line_bot_api.reply_message(
+        #         event.reply_token,
+        #         TextSendMessage('你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息')
+        #     )
+        # user_state[user_id] = 'menu_sent'
 
     elif text == "電影類型選擇":
         movie_types = ["全部", "喜劇", "犯罪", "戰爭", "歌舞", "動畫", "驚悚", "懸疑", "恐怖",
@@ -364,5 +372,5 @@ if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
 
-if __name__ == "__main__":
-    app.run(port=8000)
+# if __name__ == "__main__":
+#     app.run(port=8000)
