@@ -73,7 +73,7 @@ def handle_follow(event):
                             ButtonComponent(
                                 style="secondary",
                                 height="md",
-                                action=URIAction(label="自行輸入", uri="https://line.me/")
+                                action=MessageAction(label="自行輸入", text="請輸入想查詢的電影名稱") 
                             )
                         ],
                         flex=0
