@@ -231,6 +231,14 @@ def handle_message(event):
                                             margin="5px"
                                         ),
                                         TextComponent(
+                                            text=movie['genres'],
+                                            wrap=True,
+                                            color="#8c8c8c",
+                                            size="md",
+                                            flex=5,
+                                            margin="5px"
+                                        ),
+                                        TextComponent(
                                             text=movie['summary'],
                                             wrap=True,
                                             color="#8c8c8c",
