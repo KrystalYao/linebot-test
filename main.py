@@ -96,13 +96,14 @@ def handle_message(event):
             TextSendMessage(text="請輸入想查詢的電影名稱")
         )
         user_state[user_id] = 'awaiting_movie_name'
+        
     elif user_state.get(user_id) == 'awaiting_movie_name':
         movie_name = text
         try:
             GPT_answer = GPT_response(movie_name)
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(GPT_answer)
+                TextSendMessage(text=GPT_answer)
             )
         except:
             line_bot_api.reply_message(
@@ -339,7 +340,7 @@ def handle_message(event):
                             ButtonComponent(
                                 style="secondary",
                                 height="md",
-                                action=URIAction(label="請輸入想查詢的電影名稱", text="請輸入想查詢的電影名稱")
+                                action=MessageAction(label="自行輸入", text="請輸入想查詢的電影名稱")
                             )
                         ],
                         flex=0
@@ -362,11 +363,6 @@ def GPT_response(text):
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-
-
-
-
-
 
 if __name__ == "__main__":
     app.run(port=8000)
