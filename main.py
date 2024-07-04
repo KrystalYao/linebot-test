@@ -352,7 +352,7 @@ def handle_message(event):
         
 def GPT_response(text):
     response = openai.Completion.create(
-        model="tts-1",
+        model="gpt-4o",
         prompt=text,
         temperature=0.5,
         max_tokens=500
