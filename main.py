@@ -59,7 +59,7 @@ def handle_follow(event):
                         size="full",
                         aspect_ratio="18:10",
                         aspect_mode="cover",
-                        action=URIAction(uri="https://line.me/")  #接gpt
+                        action=MessageAction(label="請輸入想查詢的電影名稱", text="請輸入想查詢的電影名稱")
                     ),
                     footer=BoxComponent(
                         layout="vertical",
