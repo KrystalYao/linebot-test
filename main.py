@@ -219,7 +219,7 @@ def handle_message(event):
                                             url="https://developers-resource.landpress.line.me/fx/img/review_gold_star_28.png"
                                         ),
                                         TextComponent(
-                                            text=str(movie['rate']),
+                                            text=f" {str(movie['rate'])}",
                                             size="md",
                                             color="#8c8c8c",
                                             flex=0
