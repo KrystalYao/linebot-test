@@ -161,15 +161,15 @@ def handle_message(event):
                   "科幻", "冒險", "動作", "浪漫", "奇幻", "音樂", "家庭"]:
         user_state[user_id] = {'genre': text}
 
-        regions = ["亞洲", "歐洲", "英國", "非洲", "美國"]
+        regions = ["亞洲", "歐洲", "英國", "美國"]
 
         rows = [[
             ButtonComponent(
                 style="link",
                 height="md",
                 action=MessageAction(label=region, text=region)
-            ) for region in regions[i:i + 3]
-        ] for i in range(0, len(regions), 3)]
+            ) for region in regions[i:i + 4]
+        ] for i in range(0, len(regions), 4)]
 
         flex_message = FlexSendMessage(
             alt_text="地區選擇",
@@ -183,7 +183,7 @@ def handle_message(event):
         )
         line_bot_api.reply_message(event.reply_token, flex_message)
                       
-    elif text in ["亞洲", "歐洲", "英國", "非洲", "美國"]:
+    elif text in ["亞洲", "歐洲", "英國", "美國"]:
         if user_id in user_state and 'genre' in user_state[user_id]:
             user_state[user_id]['region'] = text
 
