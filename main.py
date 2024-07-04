@@ -163,12 +163,26 @@ def handle_message(event):
 
             if selected_region == "全部":
                 selected_region = ""
+                
+            # 特殊处理欧洲国家
+            if selected_region == "歐洲":
+                europe_countries = [
+                    "奧地利", "比利時", "保加利亞", "克羅埃西亞", "賽普勒斯", "捷克", "丹麥", "愛沙尼亞",
+                    "芬蘭", "法國", "德國", "希臘", "匈牙利", "愛爾蘭", "義大利", "拉脫維亞", "立陶宛",
+                    "盧森堡", "馬爾他", "荷蘭", "波蘭", "葡萄牙", "羅馬尼亞", "斯洛伐克", "斯洛維尼亞",
+                    "西班牙", "瑞典"
+                ]
 
-            # 根据用户选择的类型和地区筛选电影
-            filtered_movies = movies_df[
-                (movies_df['genres'].str.contains(selected_genre, case=False, na=False)) &
-                (movies_df['country'].str.contains(selected_region, case=False, na=False))
-            ]
+                # 根据用户选择的类型和地区筛选电影
+                filtered_movies = movies_df[
+                    (movies_df['genres'].str.contains(selected_genre, case=False, na=False)) &
+                    (movies_df['country'].isin(europe_countries))
+                ]
+            else:
+                filtered_movies = movies_df[
+                    (movies_df['genres'].str.contains(selected_genre, case=False, na=False)) &
+                    (movies_df['country'].str.contains(selected_region, case=False, na=False))
+                ]
         
             if not filtered_movies.empty:
                 random_movies = filtered_movies.sample(min(3, len(filtered_movies)))
