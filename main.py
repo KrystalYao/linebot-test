@@ -352,7 +352,7 @@ def handle_message(event):
         
 def GPT_response(text):
     response = openai.Completion.create(
-        model="text-davinci-002",
+        model="tts-1",
         prompt=text,
         temperature=0.5,
         max_tokens=500
