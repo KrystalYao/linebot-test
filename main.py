@@ -1,28 +1,23 @@
-from flask import Flask, request, abort
-from linebot import (
-    LineBotApi, WebhookHandler
-)
-from linebot.exceptions import (
-    InvalidSignatureError, LineBotApiError
-)
-from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage, FlexSendMessage, CarouselContainer,
-    BubbleContainer, BoxComponent, TextComponent, ButtonComponent, MessageAction
-)
 import pandas as pd
-import random
+import random 
+from flask import Flask, request, abort
+from linebot import LineBotApi, WebhookHandler
+from linebot.exceptions import InvalidSignatureError
+from linebot.models import (
+    MessageEvent, TextMessage, TextSendMessage, FlexSendMessage, FollowEvent, ImageSendMessage, IconComponent,
+    BubbleContainer, BoxComponent, ButtonComponent, CarouselContainer, ImageComponent, MessageAction, TextComponent, URIAction
+)
 
 app = Flask(__name__)
 
-# Channel Access Token
-line_bot_api = '1PAiU+EnukB7WtoP+lZEZR1diJ7YfpnNJbvno/WW1PwdhBHeHtDAtzaN1hgGEp5YkQHXGMRaeeahCS6Nr1LTvqfRRheTlPdSs/NXRDxqSYFxihhg8nFzV9FRhTnx+cgG/RxWHLBfuxpsERqyOfDQ4wdB04t89/1O/w1cDnyilFU='
-handler = '910973d1cee8b1ee4407254e3ca5fb2d'
+# LINE bot的Channel Access Token和Channel Secret
+LINE_BOT_API = '1PAiU+EnukB7WtoP+lZEZR1diJ7YfpnNJbvno/WW1PwdhBHeHtDAtzaN1hgGEp5YkQHXGMRaeeahCS6Nr1LTvqfRRheTlPdSs/NXRDxqSYFxihhg8nFzV9FRhTnx+cgG/RxWHLBfuxpsERqyOfDQ4wdB04t89/1O/w1cDnyilFU='
+HANDLER = '910973d1cee8b1ee4407254e3ca5fb2d'
 
+line_bot_api = LineBotApi(LINE_BOT_API)
+handler = WebhookHandler(HANDLER)
 
-# Load your movie data (replace with your actual data loading mechanism)
-movies_df = pd.read_csv('movies.csv')
-
-# Store user state
+# 用于存储用户状态的字典
 user_state = {}
 
 # Define Asia countries list
