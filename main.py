@@ -340,7 +340,6 @@ def handle_message(event):
                                 style="secondary",
                                 height="md",
                                 action=URIAction(label="請輸入想查詢的電影名稱", text="請輸入想查詢的電影名稱")
-                    ),
                             )
                         ],
                         flex=0
@@ -349,6 +348,7 @@ def handle_message(event):
             )
         ]
     )
+        
 def GPT_response(text):
     response = openai.Completion.create(
         model="text-davinci-002",
