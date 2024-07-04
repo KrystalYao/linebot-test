@@ -179,9 +179,9 @@ def handle_message(event):
                     "馬來西亞", "新加坡", "越南", "柬埔寨", "緬甸", "汶萊"
                 ]
 
-            filtered_movies = movies_df[
-                (movies_df['genres'].str.contains(selected_genre, case=False, na=False)) &
-                (movies_df['country'].isin(asian_countries))
+                filtered_movies = movies_df[
+                    (movies_df['genres'].str.contains(selected_genre, case=False, na=False)) &
+                    (movies_df['country'].isin(asian_countries))
                 ]
             else:
                 filtered_movies = movies_df[
