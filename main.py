@@ -212,7 +212,7 @@ def handle_message(event):
                                     layout="vertical",
                                     contents=[
                                         TextComponent(
-                                            text=str(movie['year']),
+                                            text=str(movie['year']).replace('.0', '年'),
                                             wrap=True,
                                             color="#8c8c8c",
                                             size="md",
