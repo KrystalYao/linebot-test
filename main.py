@@ -7,12 +7,16 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage, FlexSendMessage, FollowEvent, ImageSendMessage, IconComponent,
     BubbleContainer, BoxComponent, ButtonComponent, CarouselContainer, ImageComponent, MessageAction, TextComponent, URIAction
 )
+import os
+import openai
+import traceback
 
 app = Flask(__name__)
 
 # LINE bot的Channel Access Token和Channel Secret
 LINE_BOT_API = '1PAiU+EnukB7WtoP+lZEZR1diJ7YfpnNJbvno/WW1PwdhBHeHtDAtzaN1hgGEp5YkQHXGMRaeeahCS6Nr1LTvqfRRheTlPdSs/NXRDxqSYFxihhg8nFzV9FRhTnx+cgG/RxWHLBfuxpsERqyOfDQ4wdB04t89/1O/w1cDnyilFU='
 HANDLER = '910973d1cee8b1ee4407254e3ca5fb2d'
+openai.api_key = os.getenv('sk-proj-lnhWX99wOIGlIjhuSip8T3BlbkFJsF081MICbsTamayZ9CGh')
 
 line_bot_api = LineBotApi(LINE_BOT_API)
 handler = WebhookHandler(HANDLER)
@@ -86,10 +90,30 @@ def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text
 
-    if text == "電影類型選擇":
+    if text == "請輸入想查詢的電影名稱":
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="請輸入想查詢的電影名稱")
+        )
+        user_state[user_id] = 'awaiting_movie_name'
+    elif user_state.get(user_id) == 'awaiting_movie_name':
+        movie_name = text
+        try:
+            GPT_answer = GPT_response(movie_name)
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(GPT_answer)
+            )
+        except:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage('你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息')
+            )
+        user_state[user_id] = 'menu_sent'
+
+    elif text == "電影類型選擇":
         movie_types = ["全部", "喜劇", "犯罪", "戰爭", "歌舞", "動畫", "驚悚", "懸疑", "恐怖",
-                       "科幻", "劇情", "冒險", "動作", "浪漫", "奇幻", "兒童", "默劇", "歷史",
-                       "短片", "傳記", "音樂", "家庭"]
+                       "科幻", "冒險", "動作", "浪漫", "奇幻", "音樂", "家庭"]
 
         buttons = [
             ButtonComponent(
@@ -125,8 +149,7 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, flex_message)
 
     elif text in ["全部", "喜劇", "犯罪", "戰爭", "歌舞", "動畫", "驚悚", "懸疑", "恐怖",
-                  "科幻", "劇情", "冒險", "動作", "浪漫", "奇幻", "兒童", "默劇", "歷史",
-                  "短片", "傳記", "音樂", "家庭"]:
+                  "科幻", "冒險", "動作", "浪漫", "奇幻", "音樂", "家庭"]:
         user_state[user_id] = {'genre': text}
 
         regions = ["亞洲", "歐洲", "英國", "非洲", "美國"]
@@ -325,6 +348,24 @@ def handle_message(event):
             )
         ]
     )
+def GPT_response(text):
+    response = openai.Completion.create(
+        model="text-davinci-002",
+        prompt=text,
+        temperature=0.5,
+        max_tokens=500
+    )
+    answer = response['choices'][0]['text'].replace('。','')
+    return answer
+
+if __name__ == "__main__":
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
+
+
+
+
+
 
 if __name__ == "__main__":
     app.run(port=8000)
