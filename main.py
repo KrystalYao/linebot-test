@@ -200,6 +200,10 @@ def handle_message(event):
                                 BoxComponent(
                                     layout="baseline",
                                     contents=[
+                                        IconComponent(
+                                            size="sm",
+                                            url="https://developers-resource.line.me/fx/img/review_gold_star_28.png"
+                                        ),
                                         TextComponent(
                                             text=str(movie['rate']),
                                             size="md",
