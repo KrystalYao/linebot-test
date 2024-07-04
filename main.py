@@ -46,7 +46,7 @@ def callback():
 def handle_follow(event):
     user_id = event.source.user_id
 
-    # 发送欢迎消息和选单
+    # 發送歡迎訊息和選單
     line_bot_api.reply_message(
         event.reply_token,
         [
