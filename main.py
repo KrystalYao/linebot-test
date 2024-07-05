@@ -8,8 +8,7 @@ from linebot.models import (
     BubbleContainer, BoxComponent, ButtonComponent, CarouselContainer, ImageComponent, MessageAction, TextComponent, URIAction
 )
 import os
-import openai
-import traceback
+from openai import OpenAI
 
 app = Flask(__name__)
 
