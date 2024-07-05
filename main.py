@@ -96,7 +96,7 @@ def send_welcome_message(reply_token):
                         size="full",
                         aspect_ratio="18:10",
                         aspect_mode="cover",
-                        action=MessageAction(label="請複製以下訊息至對話框，並輸入想查詢的電影\n\n電影名稱：\n綜合評分：\n票房：\n年份：\n國家：\n類型：\n簡介：\n網友評價(2則)：")
+                        action=MessageAction(label="請複製以下訊息至對話框，並輸入想查詢的電影\n\n電影名稱：\n綜合評分：\n票房：\n年份：\n國家：\n類型：\n簡介：\n網友評價(2則)：", text="請複製以下訊息至對話框，並輸入想查詢的電影\n\n電影名稱：\n綜合評分：\n票房：\n年份：\n國家：\n類型：\n簡介：\n網友評價(2則)：")
                     ),
                     footer=BoxComponent(
                         layout="vertical",
