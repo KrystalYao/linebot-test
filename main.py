@@ -15,8 +15,8 @@ import traceback
 app = Flask(__name__)
 
 # 使用环境变量存储敏感信息
-LINE_BOT_API = os.getenv('1PAiU+EnukB7WtoP+lZEZR1diJ7YfpnNJbvno/WW1PwdhBHeHtDAtzaN1hgGEp5YkQHXGMRaeeahCS6Nr1LTvqfRRheTlPdSs/NXRDxqSYFxihhg8nFzV9FRhTnx+cgG/RxWHLBfuxpsERqyOfDQ4wdB04t89/1O/w1cDnyilFU=')
-HANDLER = os.getenv('910973d1cee8b1ee4407254e3ca5fb2d')
+LINE_BOT_API = '1PAiU+EnukB7WtoP+lZEZR1diJ7YfpnNJbvno/WW1PwdhBHeHtDAtzaN1hgGEp5YkQHXGMRaeeahCS6Nr1LTvqfRRheTlPdSs/NXRDxqSYFxihhg8nFzV9FRhTnx+cgG/RxWHLBfuxpsERqyOfDQ4wdB04t89/1O/w1cDnyilFU='
+HANDLER = '910973d1cee8b1ee4407254e3ca5fb2d'
 OPENAI_API_KEY = os.getenv('sk-proj-9HKvRp7S3pqAuLr0jvzUT3BlbkFJZG5zeVj3lKW8XRev7Xx1')
 
 line_bot_api = LineBotApi(LINE_BOT_API)
