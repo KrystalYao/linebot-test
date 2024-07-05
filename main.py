@@ -1,3 +1,4 @@
+import pandas as pd
 import random 
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
@@ -7,22 +8,19 @@ from linebot.models import (
     BubbleContainer, BoxComponent, ButtonComponent, CarouselContainer, ImageComponent, MessageAction, TextComponent, URIAction
 )
 import os
-from openai import OpenAI
+import openai
 import traceback
 
 app = Flask(__name__)
 
 # LINE bot的Channel Access Token和Channel Secret
+# LINE bot的Channel Access Token和Channel Secret
 LINE_BOT_API = '1PAiU+EnukB7WtoP+lZEZR1diJ7YfpnNJbvno/WW1PwdhBHeHtDAtzaN1hgGEp5YkQHXGMRaeeahCS6Nr1LTvqfRRheTlPdSs/NXRDxqSYFxihhg8nFzV9FRhTnx+cgG/RxWHLBfuxpsERqyOfDQ4wdB04t89/1O/w1cDnyilFU='
 HANDLER = '910973d1cee8b1ee4407254e3ca5fb2d'
 OPENAI_API_KEY = os.getenv('sk-proj-9HKvRp7S3pqAuLr0jvzUT3BlbkFJZG5zeVj3lKW8XRev7Xx1')
 
-import pandas as pd
-
 line_bot_api = LineBotApi(LINE_BOT_API)
 handler = WebhookHandler(HANDLER)
-
-client = OpenAI(api_key=OPENAI_API_KEY)
 
 # 用于存储用户状态的字典
 user_state = {}
@@ -92,28 +90,38 @@ def handle_follow(event):
 def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text
-    
-    try:
-        if text == "請輸入想查詢的電影名稱":
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text="請輸入想查詢的電影名稱")
-            )
-        else:
-            response = ask_openai(text)
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=response)
-            )
-    except Exception as e:
-        print(traceback.format_exc())
+
+    if text == "請輸入想查詢的電影名稱":
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage('發生了一些問題，請稍後再試。')
+            TextSendMessage(text="請輸入想查詢的電影名稱")
         )
-        return
+        user_state[user_id] = 'awaiting_movie_name'
+        
+    elif user_state.get(user_id) == 'awaiting_movie_name':
+        movie_name = text
+        try:
+            GPT_answer = GPT_response(movie_name)
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=GPT_answer)
+            )
+        except Exception as e:
+            print(traceback.format_exc())  # 在後臺顯示詳細的錯誤訊息
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage('發生了一些問題，請稍後再試。')
+            )
+        user_state[user_id] = 'menu_sent'
+    
+        # except:
+        #     line_bot_api.reply_message(
+        #         event.reply_token,
+        #         TextSendMessage('你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息')
+        #     )
+        # user_state[user_id] = 'menu_sent'
 
-    if text == "電影類型選擇":
+    elif text == "電影類型選擇":
         movie_types = ["全部", "喜劇", "犯罪", "戰爭", "歌舞", "動畫", "驚悚", "懸疑", "恐怖",
                        "科幻", "冒險", "動作", "浪漫", "奇幻", "音樂", "家庭"]
 
@@ -124,6 +132,7 @@ def handle_message(event):
                 action=MessageAction(label=label, text=label)
             ) for label in movie_types
         ]
+
 
         rows = [buttons[i:i + 4] for i in range(0, len(buttons), 4)]
 
@@ -350,15 +359,17 @@ def handle_message(event):
         ]
     )
         
-
-def ask_openai(input_text):
-    response = client.Completion.create(
-        model="gpt-4",
-        prompt=input_text,
-        max_tokens=150
+def GPT_response(text):
+    response = openai.Completion.create(
+        model="gpt-4o",
+        prompt=text,
+        temperature=0.5,
+        max_tokens=500
     )
-    return response['choices'][0]['text'].strip()
+    answer = response['choices'][0]['text'].replace('。','')
+    return answer
 
 if __name__ == "__main__":
-    app.run()
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
 
