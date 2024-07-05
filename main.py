@@ -366,12 +366,15 @@ def handle_message(event):
     )
         
 def GPT_response(user_input):
-    response = openai.Completion.create(
-        engine="gpt-4o",
-        prompt=user_input,
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": user_input}
+        ],
         max_tokens=150
     )
-    return response.choices[0].text.strip()
+    return response['choices'][0]['message']['content'].strip()
 
 if __name__ == "__main__":
     app.run()
