@@ -16,7 +16,7 @@ app = Flask(__name__)
 # LINE bot的Channel Access Token和Channel Secret
 LINE_BOT_API = '1PAiU+EnukB7WtoP+lZEZR1diJ7YfpnNJbvno/WW1PwdhBHeHtDAtzaN1hgGEp5YkQHXGMRaeeahCS6Nr1LTvqfRRheTlPdSs/NXRDxqSYFxihhg8nFzV9FRhTnx+cgG/RxWHLBfuxpsERqyOfDQ4wdB04t89/1O/w1cDnyilFU='
 HANDLER ='910973d1cee8b1ee4407254e3ca5fb2d'
-OPENAI_API_KEY= 'sk-proj-lnhWX99wOIGlIjhuSip8T3BlbkFJsF081MICbsTamayZ9CGh'
+OPENAI_API_KEY= 'sk-proj-9HKvRp7S3pqAuLr0jvzUT3BlbkFJZG5zeVj3lKW8XRev7Xx1'
 
 line_bot_api = LineBotApi(LINE_BOT_API)
 handler = WebhookHandler(HANDLER)
