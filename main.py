@@ -21,7 +21,6 @@ openai.api_key = os.getenv('sk-proj-9HKvRp7S3pqAuLr0jvzUT3BlbkFJZG5zeVj3lKW8XRev
 
 line_bot_api = LineBotApi(LINE_BOT_API)
 handler = WebhookHandler(HANDLER)
-openai.api_key = OPENAI_API_KEY
 
 # 用于存储用户状态的字典
 user_state = {}
