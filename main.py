@@ -111,8 +111,9 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage('發生了一些問題，請稍後再試。')
         )
+        return
 
-    elif text == "電影類型選擇":
+    if text == "電影類型選擇":
         movie_types = ["全部", "喜劇", "犯罪", "戰爭", "歌舞", "動畫", "驚悚", "懸疑", "恐怖",
                        "科幻", "冒險", "動作", "浪漫", "奇幻", "音樂", "家庭"]
 
