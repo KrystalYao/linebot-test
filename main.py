@@ -367,15 +367,12 @@ def handle_message(event):
         
 def GPT_response(movie_name):
     prompt = f"請根據您的喜好推薦一部和《{movie_name}》相似的電影。"
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[
-            {"role": "system", "content": "User: " + prompt},
-            {"role": "user", "content": movie_name}
-        ],
+    response = openai.Completion.create(
+        engine="text-davinci-003",
+        prompt=prompt,
         max_tokens=150
     )
-    return response['choices'][0]['message']['content']
+    return response.choices[0].text.strip()
 
 if __name__ == "__main__":
     app.run(debug=True)
