@@ -21,6 +21,7 @@ OPENAI_API_KEY = os.getenv('sk-proj-9HKvRp7S3pqAuLr0jvzUT3BlbkFJZG5zeVj3lKW8XRev
 
 line_bot_api = LineBotApi(LINE_BOT_API)
 handler = WebhookHandler(HANDLER)
+client = openai(api_key=OPENAI_API_KEY)
 
 # 用于存储用户状态的字典
 user_state = {}
@@ -359,15 +360,17 @@ def handle_message(event):
         ]
     )
         
-def GPT_response(text):
-    response = openai.Completion.create(
-        model="gpt-4o",
-        prompt=text,
-        temperature=0.5,
-        max_tokens=500
+def ask_openai(input_text):
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": input_text}
+        ],
+        max_tokens=150
     )
-    answer = response['choices'][0]['text'].replace('。','')
-    return answer
+    return response.choices[0].message.content.strip()
+
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
