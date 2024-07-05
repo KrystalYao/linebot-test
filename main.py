@@ -60,7 +60,7 @@ def handle_follow(event):
                         size="full",
                         aspect_ratio="18:10",
                         aspect_mode="cover",
-                        action=MessageAction(label='請複製以下訊息至對話框\n\n我想查詢"電影名稱"的資料, text='請複製以下訊息至對話框\n\n我想查詢"電影名稱"的資料')
+                        action=MessageAction(label='請複製以下訊息至對話框\n\n我想查詢"電影名稱"的資料', text='請複製以下訊息至對話框\n\n我想查詢"電影名稱"的資料')
                     ),
                     footer=BoxComponent(
                         layout="vertical",
