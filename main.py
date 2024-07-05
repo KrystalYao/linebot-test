@@ -21,6 +21,8 @@ OPENAI_API_KEY= 'sk-proj-9HKvRp7S3pqAuLr0jvzUT3BlbkFJZG5zeVj3lKW8XRev7Xx1'
 line_bot_api = LineBotApi(LINE_BOT_API)
 handler = WebhookHandler(HANDLER)
 
+client = OpenAI(api_key=OPENAI_API_KEY)
+
 # 用于存储用户状态的字典
 user_state = {}
 
@@ -89,44 +91,25 @@ def handle_follow(event):
 def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text
-
-    if text == "請輸入想查詢的電影名稱":
+    
+    try:
+        if text == "請輸入想查詢的電影名稱":
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text="請輸入想查詢的電影名稱")
+            )
+        else:
+            response = ask_openai(text)
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=response)
+            )
+    except Exception as e:
+        print(traceback.format_exc())
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text="請輸入想查詢的電影名稱")
+            TextSendMessage('發生了一些問題，請稍後再試。')
         )
-        user_state[user_id] = 'awaiting_movie_name'
-        
-    elif user_state.get(user_id) == 'awaiting_movie_name':
-        movie_name = text
-        try:
-            GPT_answer = GPT_response(movie_name)
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=GPT_answer)
-            )
-            user_state[user_id] = 'chatting_with_gpt'
-        except Exception as e:
-            print(traceback.format_exc())  # 在後臺顯示詳細的錯誤訊息
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage('發生了一些問題，請稍後再試。')
-            )
-        user_state[user_id] = 'menu_sent'
-    
-    elif user_state.get(user_id) == 'chatting_with_gpt':
-        try:
-            GPT_answer = GPT_response(text)
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=GPT_answer)
-            )
-        except Exception as e:
-            print(traceback.format_exc())  # 在後臺顯示詳細的錯誤訊息
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage('發生了一些問題，請稍後再試。')   
-            )
 
     elif text == "電影類型選擇":
         movie_types = ["全部", "喜劇", "犯罪", "戰爭", "歌舞", "動畫", "驚悚", "懸疑", "恐怖",
@@ -365,14 +348,14 @@ def handle_message(event):
         ]
     )
         
-def GPT_response(movie_name):
-    prompt = f"請根據您的喜好推薦一部和《{movie_name}》相似的電影。"
-    response = OpenAI.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
+
+def ask_openai(input_text):
+    response = client.Completion.create(
+        model="gpt-4",
+        prompt=input_text,
         max_tokens=150
     )
-    return response.choices[0].text.strip()
+    return response['choices'][0]['text'].strip()
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
