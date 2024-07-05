@@ -322,13 +322,16 @@ def handle_message(event):
         )
 
 def ask_openai(input_text):
-    response = client.Completion.create(
-        model="gpt-4",
-        prompt=input_text,
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": input_text}
+        ],
         max_tokens=150
     )
-    return response['choices'][0]['text'].strip()
+    return response.choices[0].message.content.strip()
 
 if __name__ == "__main__":
-    app.run(port=80)
-    
+    app.run()
+
