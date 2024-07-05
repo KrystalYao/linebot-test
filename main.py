@@ -193,11 +193,49 @@ def handle_region_selection(user_id, selected_region, reply_token):
         if not filtered_movies.empty:
             random_movies = filtered_movies.sample(min(3, len(filtered_movies)))
             movie_messages = [create_movie_message(movie) for _, movie in random_movies.iterrows()]
+            
             line_bot_api.reply_message(reply_token, FlexSendMessage(alt_text="電影推薦", contents=CarouselContainer(contents=movie_messages)))
         else:
             line_bot_api.reply_message(reply_token, TextSendMessage(text="沒有符合條件的電影。"))
     else:
         line_bot_api.reply_message(reply_token, TextSendMessage(text="請先選擇電影類型。"))
+else:
+    line_bot_api.reply_message(
+        reply_token,
+        [
+            TextSendMessage(text="您好，我是電影推薦小助手。"),
+            FlexSendMessage(
+                alt_text="電影選擇",
+                contents=BubbleContainer(
+                    hero=ImageComponent(
+                        url="https://miro.medium.com/v2/resize:fit:1100/format:webp/0*T3hzZYnWBEOrQzM1.jpg",
+                        size="full",
+                        aspect_ratio="18:10",
+                        aspect_mode="cover",
+                        action=MessageAction(label="請複製以下訊息至對話框，並輸入想查詢的電影\n\n電影名稱：\n綜合評分：\n票房：\n年份：\n國家：\n類型：\n簡介：\n網友評價(2則)：", text="請複製以下訊息至對話框，並輸入想查詢的電影\n\n電影名稱：\n綜合評分：\n票房：\n年份：\n國家：\n類型：\n簡介：\n網友評價(2則)：")
+                    ),
+                    footer=BoxComponent(
+                        layout="vertical",
+                        spacing="sm",
+                        contents=[
+                            ButtonComponent(
+                                style="primary",
+                                height="md",
+                                action=MessageAction(label="電影類型選擇", text="電影類型選擇")
+                            ),
+                            ButtonComponent(
+                                style="secondary",
+                                height="md",
+                                action=MessageAction(label="自行輸入", text="請複製以下訊息至對話框，並輸入想查詢的電影\n\n電影名稱：\n綜合評分：\n票房：\n年份：\n國家：\n類型：\n簡介：\n網友評價(2則)：") 
+                            )
+                        ],
+                        flex=0
+                    )
+                )
+            )
+        ]
+    )
+
 
 def filter_movies(genre, region):
     if region == "歐洲":
