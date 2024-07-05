@@ -60,7 +60,7 @@ def handle_follow(event):
                         size="full",
                         aspect_ratio="18:10",
                         aspect_mode="cover",
-                        action=MessageAction(label='請複製以下訊息至對話框\n\n我想查詢"電影名稱"的資料', text='請複製以下訊息至對話框\n\n我想查詢"電影名稱"的資料')
+                        action=MessageAction(label="請複製以下訊息至對話框\n\n我想查詢〈電影名稱〉的資料", text="請複製以下訊息至對話框\n\n我想查詢〈電影名稱〉的資料")
                     ),
                     footer=BoxComponent(
                         layout="vertical",
@@ -74,7 +74,7 @@ def handle_follow(event):
                             ButtonComponent(
                                 style="secondary",
                                 height="md",
-                                action=MessageAction(label="自行輸入", text='請複製以下訊息至對話框\n\n我想查詢"電影名稱"的資料') 
+                                action=MessageAction(label="自行輸入", text="請複製以下訊息至對話框\n\n我想查詢〈電影名稱〉的資料") 
                             )
                         ],
                         flex=0
@@ -91,10 +91,10 @@ def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text
 
-    if text == '請複製以下訊息至對話框\n\n我想查詢"電影名稱"的資料':
+    if text == "請複製以下訊息至對話框\n\n我想查詢〈電影名稱〉的資料":
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text='請複製以下訊息至對話框\n\n我想查詢"電影名稱"的資料')
+            TextSendMessage(text="請複製以下訊息至對話框\n\n我想查詢〈電影名稱〉的資料")
         )
         user_state[user_id] = 'awaiting_movie_name'
         
@@ -335,7 +335,7 @@ def handle_message(event):
                         size="full",
                         aspect_ratio="18:10",
                         aspect_mode="cover",
-                        action=MessageAction(label='請複製以下訊息至對話框\n\n我想查詢"電影名稱"的資料', text='請複製以下訊息至對話框\n\n我想查詢"電影名稱"的資料')
+                        action=MessageAction(label="請複製以下訊息至對話框\n\n我想查詢〈電影名稱〉的資料", text="請複製以下訊息至對話框\n\n我想查詢〈電影名稱〉的資料")
                     ),
                     footer=BoxComponent(
                         layout="vertical",
@@ -349,7 +349,7 @@ def handle_message(event):
                             ButtonComponent(
                                 style="secondary",
                                 height="md",
-                                action=MessageAction(label="自行輸入", text='請複製以下訊息至對話框\n\n我想查詢"電影名稱"的資料')
+                                action=MessageAction(label="自行輸入", text="請複製以下訊息至對話框\n\n我想查詢〈電影名稱〉的資料")
                             )
                         ],
                         flex=0
