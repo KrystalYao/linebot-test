@@ -8,14 +8,15 @@ from linebot.models import (
     BubbleContainer, BoxComponent, ButtonComponent, CarouselContainer, ImageComponent, MessageAction, TextComponent, URIAction
 )
 import os
-from openai import OpenAI
+import openAI
+import traceback
 
 app = Flask(__name__)
 
 # LINE bot的Channel Access Token和Channel Secret
 LINE_BOT_API = '1PAiU+EnukB7WtoP+lZEZR1diJ7YfpnNJbvno/WW1PwdhBHeHtDAtzaN1hgGEp5YkQHXGMRaeeahCS6Nr1LTvqfRRheTlPdSs/NXRDxqSYFxihhg8nFzV9FRhTnx+cgG/RxWHLBfuxpsERqyOfDQ4wdB04t89/1O/w1cDnyilFU='
 HANDLER ='910973d1cee8b1ee4407254e3ca5fb2d'
-OpenAI.api_key = os.getenv('sk-proj-lnhWX99wOIGlIjhuSip8T3BlbkFJsF081MICbsTamayZ9CGh')
+openai.api_key = os.getenv('sk-proj-lnhWX99wOIGlIjhuSip8T3BlbkFJsF081MICbsTamayZ9CGh')
 
 line_bot_api = LineBotApi(LINE_BOT_API)
 handler = WebhookHandler(HANDLER)
