@@ -367,7 +367,7 @@ def handle_message(event):
         
 def GPT_response(movie_name):
     prompt = f"請根據您的喜好推薦一部和《{movie_name}》相似的電影。"
-    response = openai.Completion.create(
+    response = OpenAI.Completion.create(
         engine="text-davinci-003",
         prompt=prompt,
         max_tokens=150
