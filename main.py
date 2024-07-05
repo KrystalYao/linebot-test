@@ -367,7 +367,7 @@ def handle_message(event):
         
 def GPT_response(user_input):
     response = openai.ChatCompletion.create(
-        model="gpt-4",
+        model="gpt-4.0",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": user_input}
