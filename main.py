@@ -105,6 +105,7 @@ def handle_message(event):
                 event.reply_token,
                 TextSendMessage(text=GPT_answer)
             )
+            user_state[user_id] = 'chatting_with_gpt'
         except Exception as e:
             print(traceback.format_exc())  # 在後臺顯示詳細的錯誤訊息
             line_bot_api.reply_message(
@@ -113,12 +114,18 @@ def handle_message(event):
             )
         user_state[user_id] = 'menu_sent'
     
-        # except:
-        #     line_bot_api.reply_message(
-        #         event.reply_token,
-        #         TextSendMessage('你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息')
-        #     )
-        # user_state[user_id] = 'menu_sent'
+    elif user_state.get(user_id) == 'chatting_with_gpt':
+        try:
+            GPT_answer = GPT_response(text)
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=GPT_answer)
+            )
+        except Exception as e:
+            print(traceback.format_exc())  # 在後臺顯示詳細的錯誤訊息
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage('發生了一些問題，請稍後再試。')    
 
     elif text == "電影類型選擇":
         movie_types = ["全部", "喜劇", "犯罪", "戰爭", "歌舞", "動畫", "驚悚", "懸疑", "恐怖",
@@ -131,7 +138,6 @@ def handle_message(event):
                 action=MessageAction(label=label, text=label)
             ) for label in movie_types
         ]
-
 
         rows = [buttons[i:i + 4] for i in range(0, len(buttons), 4)]
 
@@ -358,20 +364,13 @@ def handle_message(event):
         ]
     )
         
-def GPT_response(text):
+def GPT_response(user_input):
     response = openai.Completion.create(
-        model="gpt-4o",
-        prompt=text,
-        temperature=0.5,
-        max_tokens=500
+        engine="gpt-4o",
+        prompt=user_input,
+        max_tokens=150
     )
-    answer = response['choices'][0]['text'].replace('。','')
-    return answer
+    return response.choices[0].text.strip()
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
-
-# if __name__ == "__main__":
-#     app.run(port=8000)
-
+    app.run()
