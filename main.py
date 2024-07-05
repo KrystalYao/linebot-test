@@ -46,7 +46,7 @@ def callback():
     return 'OK'
 
 @handler.add(FollowEvent)
-selecte handle_follow(event):
+def handle_follow(event):
     user_id = event.source.user_id
 
     # 發送歡迎訊息和選單
