@@ -57,10 +57,10 @@ def handle_message(event):
     text = event.message.text
     
     try:
-        if text == "請複製本段訊息至對話框，電影名稱：":
+        if text == "請複製以下訊息至對話框，並輸入想查詢的電影\n\n電影名稱：\n綜合評分：\n票房：\n年份：\n國家：\n類型：\n簡介：\n網友評價(2則)：":
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text="請複製本段訊息至對話框，電影名稱：")
+                TextSendMessage(text="請複製以下訊息至對話框，並輸入想查詢的電影\n\n電影名稱：\n綜合評分：\n票房：\n年份：\n國家：\n類型：\n簡介：\n網友評價(2則)：")
             )
         elif text == "電影類型選擇":
             send_movie_type_selection(event.reply_token)
@@ -80,7 +80,7 @@ def handle_message(event):
         print(traceback.format_exc())
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage('發生了一些問題，請稍後再試。')
+            TextSendMessage('你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息')
         )
 
 def send_welcome_message(reply_token):
@@ -96,7 +96,7 @@ def send_welcome_message(reply_token):
                         size="full",
                         aspect_ratio="18:10",
                         aspect_mode="cover",
-                        action=MessageAction(label="請輸入想查詢的電影名稱", text="請複製本段訊息至對話框，電影名稱：")
+                        action=MessageAction(label="請複製以下訊息至對話框，並輸入想查詢的電影\n\n電影名稱：\n綜合評分：\n票房：\n年份：\n國家：\n類型：\n簡介：\n網友評價(2則)：")
                     ),
                     footer=BoxComponent(
                         layout="vertical",
@@ -110,7 +110,7 @@ def send_welcome_message(reply_token):
                             ButtonComponent(
                                 style="secondary",
                                 height="md",
-                                action=MessageAction(label="自行輸入", text="請複製本段訊息至對話框，電影名稱：") 
+                                action=MessageAction(label="自行輸入", text="請複製以下訊息至對話框，並輸入想查詢的電影\n\n電影名稱：\n綜合評分：\n票房：\n年份：\n國家：\n類型：\n簡介：\n網友評價(2則)：") 
                             )
                         ],
                         flex=0
