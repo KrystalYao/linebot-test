@@ -365,16 +365,17 @@ def handle_message(event):
         ]
     )
         
-def GPT_response(user_input):
+def GPT_response(movie_name):
+    prompt = f"請根據您的喜好推薦一部和《{movie_name}》相似的電影。"
     response = openai.ChatCompletion.create(
-        model="gpt-4.0",
+        model="gpt-4",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": user_input}
+            {"role": "system", "content": "User: " + prompt},
+            {"role": "user", "content": movie_name}
         ],
         max_tokens=150
     )
-    return response['choices'][0]['message']['content'].strip()
+    return response['choices'][0]['message']['content']
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
