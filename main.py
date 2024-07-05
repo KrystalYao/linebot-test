@@ -125,7 +125,8 @@ def handle_message(event):
             print(traceback.format_exc())  # 在後臺顯示詳細的錯誤訊息
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage('發生了一些問題，請稍後再試。')    
+                TextSendMessage('發生了一些問題，請稍後再試。')   
+            )
 
     elif text == "電影類型選擇":
         movie_types = ["全部", "喜劇", "犯罪", "戰爭", "歌舞", "動畫", "驚悚", "懸疑", "恐怖",
