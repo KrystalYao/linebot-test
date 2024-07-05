@@ -57,10 +57,10 @@ def handle_message(event):
     text = event.message.text
     
     try:
-        if text == "請輸入想查詢的電影名稱":
+        if text == "你好":
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text="請輸入想查詢的電影名稱")
+                TextSendMessage(text="你好")
             )
         elif text == "電影類型選擇":
             send_movie_type_selection(event.reply_token)
@@ -110,7 +110,7 @@ def send_welcome_message(reply_token):
                             ButtonComponent(
                                 style="secondary",
                                 height="md",
-                                action=MessageAction(label="自行輸入", text="請輸入想查詢的電影名稱") 
+                                action=MessageAction(label="自行輸入", text="你好") 
                             )
                         ],
                         flex=0
