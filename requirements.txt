@@ -2,4 +2,5 @@ line-bot-sdk
 flask
 gunicorn
 pandas
-openai
+openai==0.28
+
